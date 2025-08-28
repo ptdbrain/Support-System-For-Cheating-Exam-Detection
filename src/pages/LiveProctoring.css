@@ -1,0 +1,115 @@
+.live-proctoring {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.proctoring-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.camera-info {
+  flex: 1;
+}
+
+.camera-info h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.camera-info p {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.proctoring-content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  height: calc(100vh - 200px);
+}
+
+.video-section {
+  background-color: #000;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.sidebar {
+  background-color: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .proctoring-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 1rem;
+    height: auto;
+  }
+  
+  .sidebar {
+    order: 2;
+  }
+  
+  .video-section {
+    order: 1;
+    height: 60vh;
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .live-proctoring {
+    padding: 0 0.5rem;
+  }
+  
+  .proctoring-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .camera-info h1 {
+    font-size: 1.25rem;
+  }
+  
+  .camera-info p {
+    font-size: 0.8rem;
+  }
+  
+  .proctoring-content {
+    gap: 1rem;
+  }
+  
+  .video-section {
+    height: 50vh;
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .proctoring-header {
+    gap: 0.5rem;
+  }
+  
+  .camera-info h1 {
+    font-size: 1.1rem;
+  }
+  
+  .video-section {
+    height: 40vh;
+    min-height: 250px;
+  }
+}

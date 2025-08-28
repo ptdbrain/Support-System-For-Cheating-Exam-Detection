@@ -1,0 +1,124 @@
+.room-monitoring {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.monitoring-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.room-info {
+  flex: 1;
+}
+
+.room-info h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.room-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.stat strong {
+  color: #374151;
+  margin-right: 0.25rem;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 0.5rem;
+}
+
+.status.active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.camera-previews {
+  margin-top: 2rem;
+}
+
+.camera-previews h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+
+.cameras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .room-monitoring {
+    padding: 0 1rem;
+  }
+  
+  .monitoring-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .room-info h1 {
+    font-size: 1.5rem;
+  }
+  
+  .room-stats {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .cameras-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .camera-previews h2 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-monitoring {
+    padding: 0 0.5rem;
+  }
+  
+  .room-info h1 {
+    font-size: 1.25rem;
+  }
+  
+  .room-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .cameras-grid {
+    gap: 1rem;
+  }
+}
