@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext';
-import RoomCard from '../components/dashboard/RoomCard';
+import { useProctoring } from '../context/ProctoringContext.jsx';
+import RoomCard from '../components/dashboard/RoomCard.jsx';
 import './ExamRoomDashboard.css';
 
 function ExamRoomDashboard() {

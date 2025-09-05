@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext';
-import VideoStream from '../components/proctoring/VideoStream';
-import ProctoringPanel from '../components/proctoring/ProctoringPanel';
-import BackButton from '../components/common/BackButton';
-import AlertBanner from '../components/common/AlertBanner';
+import { useProctoring } from '../context/ProctoringContext.jsx';
+import VideoStream from '../components/proctoring/VideoStream.jsx';
+import ProctoringPanel from '../components/proctoring/ProctoringPanel.jsx';
+import BackButton from '../components/common/BackButton.jsx';
+import AlertBanner from '../components/common/AlertBanner.jsx';
 import './LiveProctoring.css';
 
 function LiveProctoring() {

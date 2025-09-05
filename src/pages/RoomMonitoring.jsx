@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext';
-import CameraPreview from '../components/monitoring/CameraPreview';
-import BackButton from '../components/common/BackButton';
+import { useProctoring } from '../context/ProctoringContext.jsx';
+import CameraPreview from '../components/monitoring/CameraPreview.jsx';
+import BackButton from '../components/common/BackButton.jsx';
 import './RoomMonitoring.css';
 
 function RoomMonitoring() {
