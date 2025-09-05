@@ -1,7 +1,7 @@
-import React from 'react';
+import { VideoStreamProps } from '../../types/index.js';
 import './VideoStream.css';
 
-function VideoStream({ camera, isRecording }) {
+function VideoStream({ camera, isRecording }: VideoStreamProps): JSX.Element {
   return (
     <div className="video-stream">
       <div className="video-container">

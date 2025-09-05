@@ -1,7 +1,7 @@
-import React from 'react';
+import { CameraPreviewProps } from '../../types/index.js';
 import './CameraPreview.css';
 
-function CameraPreview({ camera, alertLevel, onClick }) {
+function CameraPreview({ camera, alertLevel, onClick }: CameraPreviewProps): JSX.Element {
   return (
     <div className={`camera-preview ${alertLevel !== 'none' ? `alert-${alertLevel}` : ''}`} onClick={onClick}>
       <div className="camera-header">

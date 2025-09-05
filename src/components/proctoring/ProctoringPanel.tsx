@@ -1,4 +1,4 @@
-import React from 'react';
+import { ProctoringPanelProps } from '../../types/index.js';
 import './ProctoringPanel.css';
 
 function ProctoringPanel({ 
@@ -8,8 +8,8 @@ function ProctoringPanel({
   isRecording, 
   onNotifySuspicious, 
   onRecordBehavior 
-}) {
-  const formatTimestamp = (timestamp) => {
+}: ProctoringPanelProps): JSX.Element {
+  const formatTimestamp = (timestamp: string): string => {
     return new Date(timestamp).toLocaleString();
   };
 

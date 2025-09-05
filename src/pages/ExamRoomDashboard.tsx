@@ -1,14 +1,13 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext.jsx';
-import RoomCard from '../components/dashboard/RoomCard.jsx';
+import { useProctoring } from '../context/ProctoringContext.js';
+import RoomCard from '../components/dashboard/RoomCard.js';
 import './ExamRoomDashboard.css';
 
-function ExamRoomDashboard() {
+function ExamRoomDashboard(): JSX.Element {
   const navigate = useNavigate();
   const { examRooms } = useProctoring();
 
-  const handleRoomClick = (roomId) => {
+  const handleRoomClick = (roomId: string): void => {
     navigate(`/room/${roomId}`);
   };
 

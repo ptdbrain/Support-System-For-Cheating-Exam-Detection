@@ -1,7 +1,6 @@
-import React from 'react';
 import './Header.css';
 
-function Header() {
+function Header(): JSX.Element {
   return (
     <header className="app-header">
       <div className="header-content">

@@ -1,7 +1,7 @@
-import React from 'react';
+import { BackButtonProps } from '../../types/index.js';
 import './BackButton.css';
 
-function BackButton({ onClick, label = 'Back' }) {
+function BackButton({ onClick, label = 'Back' }: BackButtonProps): JSX.Element {
   return (
     <button className="back-button" onClick={onClick}>
       <svg 

@@ -1,7 +1,7 @@
-import React from 'react';
+import { AlertBannerProps } from '../../types/index.js';
 import './AlertBanner.css';
 
-function AlertBanner({ level, count, studentName }) {
+function AlertBanner({ level, count, studentName }: AlertBannerProps): JSX.Element | null {
   if (level === 'none') return null;
 
   const getAlertMessage = () => {

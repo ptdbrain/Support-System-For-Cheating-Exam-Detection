@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext.jsx';
-import VideoStream from '../components/proctoring/VideoStream.jsx';
-import ProctoringPanel from '../components/proctoring/ProctoringPanel.jsx';
-import BackButton from '../components/common/BackButton.jsx';
-import AlertBanner from '../components/common/AlertBanner.jsx';
+import { useProctoring } from '../context/ProctoringContext.js';
+import VideoStream from '../components/proctoring/VideoStream.js';
+import ProctoringPanel from '../components/proctoring/ProctoringPanel.js';
+import BackButton from '../components/common/BackButton.js';
+import AlertBanner from '../components/common/AlertBanner.js';
 import './LiveProctoring.css';
 
-function LiveProctoring() {
+function LiveProctoring(): JSX.Element {
   const { roomId, cameraId } = useParams();
   const navigate = useNavigate();
   const { examRooms, getAlertLevel, logSuspiciousBehavior, recordBehavior, studentBehaviors } = useProctoring();
@@ -29,11 +29,11 @@ function LiveProctoring() {
   const alertLevel = getAlertLevel(camera.studentId);
   const behaviorData = studentBehaviors[camera.studentId] || { count: 0, events: [] };
 
-  const handleNotifySuspicious = () => {
+  const handleNotifySuspicious = (): void => {
     logSuspiciousBehavior(camera.studentId, 'Suspicious behavior flagged by proctor');
   };
 
-  const handleRecordBehavior = () => {
+  const handleRecordBehavior = (): void => {
     if (isRecording) {
       setIsRecording(false);
       // In a real app, you would stop the actual recording here

@@ -1,11 +1,10 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext.jsx';
-import CameraPreview from '../components/monitoring/CameraPreview.jsx';
-import BackButton from '../components/common/BackButton.jsx';
+import { useProctoring } from '../context/ProctoringContext.js';
+import CameraPreview from '../components/monitoring/CameraPreview.js';
+import BackButton from '../components/common/BackButton.js';
 import './RoomMonitoring.css';
 
-function RoomMonitoring() {
+function RoomMonitoring(): JSX.Element {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const { examRooms, getAlertLevel } = useProctoring();
@@ -22,7 +21,7 @@ function RoomMonitoring() {
     );
   }
 
-  const handleCameraClick = (cameraId) => {
+  const handleCameraClick = (cameraId: string): void => {
     navigate(`/room/${roomId}/camera/${cameraId}`);
   };
 

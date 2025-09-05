@@ -1,7 +1,7 @@
-import React from 'react';
+import { RoomCardProps } from '../../types/index.js';
 import './RoomCard.css';
 
-function RoomCard({ room, onClick }) {
+function RoomCard({ room, onClick }: RoomCardProps): JSX.Element {
   return (
     <div className="room-card" onClick={onClick}>
       <div className="room-card-header">

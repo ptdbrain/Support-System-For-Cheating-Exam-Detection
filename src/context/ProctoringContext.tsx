@@ -1,9 +1,20 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, ReactNode } from 'react';
+import { ExamRoom, StudentBehavior, AlertLevel, ProctoringContextType } from '../types/index.js';
 
-const ProctoringContext = createContext();
+const ProctoringContext = createContext<ProctoringContextType | undefined>(undefined);
+
+// Action types
+type ProctoringAction = 
+  | { type: 'LOG_SUSPICIOUS_BEHAVIOR'; payload: { studentId: string; timestamp: string; description: string } }
+  | { type: 'RECORD_BEHAVIOR'; payload: { studentId: string; timestamp: string } };
+
+interface ProctoringState {
+  examRooms: ExamRoom[];
+  studentBehaviors: Record<string, StudentBehavior>;
+}
 
 // Initial state
-const initialState = {
+const initialState: ProctoringState = {
   examRooms: [
     {
       id: 'room-001',
@@ -46,16 +57,11 @@ const initialState = {
   }
 };
 
-// Action types
-const actionTypes = {
-  LOG_SUSPICIOUS_BEHAVIOR: 'LOG_SUSPICIOUS_BEHAVIOR',
-  RECORD_BEHAVIOR: 'RECORD_BEHAVIOR'
-};
 
 // Reducer
-function proctoringReducer(state, action) {
+function proctoringReducer(state: ProctoringState, action: ProctoringAction): ProctoringState {
   switch (action.type) {
-    case actionTypes.LOG_SUSPICIOUS_BEHAVIOR:
+    case 'LOG_SUSPICIOUS_BEHAVIOR':
       const { studentId, timestamp, description } = action.payload;
       const currentBehavior = state.studentBehaviors[studentId] || { count: 0, events: [] };
       
@@ -78,7 +84,7 @@ function proctoringReducer(state, action) {
         }
       };
       
-    case actionTypes.RECORD_BEHAVIOR:
+    case 'RECORD_BEHAVIOR':
       const { studentId: recordStudentId, timestamp: recordTimestamp } = action.payload;
       const currentRecordBehavior = state.studentBehaviors[recordStudentId] || { count: 0, events: [] };
       
@@ -107,12 +113,12 @@ function proctoringReducer(state, action) {
 }
 
 // Provider component
-export function ProctoringProvider({ children }) {
+export function ProctoringProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(proctoringReducer, initialState);
 
-  const logSuspiciousBehavior = (studentId, description = 'Suspicious behavior detected') => {
+  const logSuspiciousBehavior = (studentId: string, description: string = 'Suspicious behavior detected') => {
     dispatch({
-      type: actionTypes.LOG_SUSPICIOUS_BEHAVIOR,
+      type: 'LOG_SUSPICIOUS_BEHAVIOR',
       payload: {
         studentId,
         timestamp: new Date().toISOString(),
@@ -121,9 +127,9 @@ export function ProctoringProvider({ children }) {
     });
   };
 
-  const recordBehavior = (studentId) => {
+  const recordBehavior = (studentId: string) => {
     dispatch({
-      type: actionTypes.RECORD_BEHAVIOR,
+      type: 'RECORD_BEHAVIOR',
       payload: {
         studentId,
         timestamp: new Date().toISOString()
@@ -131,14 +137,14 @@ export function ProctoringProvider({ children }) {
     });
   };
 
-  const getAlertLevel = (studentId) => {
+  const getAlertLevel = (studentId: string): AlertLevel => {
     const behaviorData = state.studentBehaviors[studentId];
     if (!behaviorData || behaviorData.count === 0) return 'none';
     if (behaviorData.count < 5) return 'orange';
     return 'red';
   };
 
-  const value = {
+  const value: ProctoringContextType = {
     ...state,
     logSuspiciousBehavior,
     recordBehavior,
@@ -153,7 +159,7 @@ export function ProctoringProvider({ children }) {
 }
 
 // Hook to use the context
-export function useProctoring() {
+export function useProctoring(): ProctoringContextType {
   const context = useContext(ProctoringContext);
   if (!context) {
     throw new Error('useProctoring must be used within a ProctoringProvider');
