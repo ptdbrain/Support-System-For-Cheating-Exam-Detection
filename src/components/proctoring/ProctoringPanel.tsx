@@ -17,41 +17,17 @@ function ProctoringPanel({
     <div className="proctoring-panel">
       <div className="panel-header">
         <h3>Proctoring Tools</h3>
-        <div className={`alert-status ${alertLevel}`}>
-          {alertLevel === 'red' && (
-            <>
-              <span className="alert-icon">🚨</span>
-              <span>HIGH ALERT</span>
-            </>
-          )}
-          {alertLevel === 'orange' && (
-            <>
-              <span className="alert-icon">⚠️</span>
-              <span>CAUTION</span>
-            </>
-          )}
-          {alertLevel === 'none' && (
-            <>
-              <span className="alert-icon">✅</span>
-              <span>NORMAL</span>
-            </>
-          )}
-        </div>
       </div>
 
       <div className="student-summary">
-        <h4>Student Information</h4>
+        <h4>AI Detection</h4>
         <div className="summary-item">
-          <span className="label">Name:</span>
-          <span className="value">{student.name}</span>
+          <span className="label">Status:</span>
+          <span className="value">Waiting for AI Model</span>
         </div>
         <div className="summary-item">
-          <span className="label">ID:</span>
-          <span className="value">{student.id}</span>
-        </div>
-        <div className="summary-item">
-          <span className="label">Suspicious Behaviors:</span>
-          <span className={`value count ${alertLevel}`}>{behaviorData.count}</span>
+          <span className="label">Behavior Analysis:</span>
+          <span className="value">Not Available</span>
         </div>
       </div>
 
@@ -80,36 +56,12 @@ function ProctoringPanel({
       </div>
 
       <div className="behavior-log">
-        <h4>Recent Activity</h4>
+        <h4>AI Activity Log</h4>
         <div className="log-container">
-          {behaviorData.events.length === 0 ? (
-            <div className="no-events">
-              <p>No events recorded yet.</p>
-            </div>
-          ) : (
-            <div className="events-list">
-              {behaviorData.events
-                .slice()
-                .reverse()
-                .slice(0, 10)
-                .map((event) => (
-                  <div key={event.id} className={`event-item ${event.type}`}>
-                    <div className="event-header">
-                      <span className={`event-type ${event.type}`}>
-                        {event.type === 'suspicious' ? '⚠️' : '📹'}
-                        {event.type === 'suspicious' ? 'Suspicious' : 'Recording'}
-                      </span>
-                      <span className="event-time">
-                        {formatTimestamp(event.timestamp)}
-                      </span>
-                    </div>
-                    <div className="event-description">
-                      {event.description}
-                    </div>
-                  </div>
-                ))}
-            </div>
-          )}
+          <div className="no-events">
+            <p>AI behavior detection model not yet implemented.</p>
+            <p>Events will appear here once AI analysis is active.</p>
+          </div>
         </div>
       </div>
 

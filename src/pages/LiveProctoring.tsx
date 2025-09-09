@@ -54,17 +54,8 @@ function LiveProctoring(): JSX.Element {
         <BackButton onClick={() => navigate(`/room/${roomId}`)} />
         <div className="camera-info">
           <h1>{room.name} - {camera.name}</h1>
-          <p>Student: {camera.studentName} (ID: {camera.studentId})</p>
         </div>
       </div>
-
-      {alertLevel !== 'none' && (
-        <AlertBanner 
-          level={alertLevel} 
-          count={behaviorData.count}
-          studentName={camera.studentName}
-        />
-      )}
 
       <div className="proctoring-content">
         <div className="video-section">

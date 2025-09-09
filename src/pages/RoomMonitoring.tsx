@@ -25,6 +25,11 @@ function RoomMonitoring(): JSX.Element {
     navigate(`/room/${roomId}/camera/${cameraId}`);
   };
 
+  const handleAddCamera = (): void => {
+    // TODO: Implement add camera functionality
+    console.log('Add Camera clicked for room:', roomId);
+  };
+
   return (
     <div className="room-monitoring">
       <div className="monitoring-header">
@@ -33,7 +38,7 @@ function RoomMonitoring(): JSX.Element {
           <h1>{room.name}</h1>
           <div className="room-stats">
             <span className="stat">
-              <strong>Students:</strong> {room.studentsCount}
+              <strong>Slots:</strong> {room.studentsCount}
             </span>
             <span className="stat">
               <strong>Status:</strong> 
@@ -44,7 +49,15 @@ function RoomMonitoring(): JSX.Element {
       </div>
 
       <div className="camera-previews">
-        <h2>Camera Feeds</h2>
+        <div className="cameras-header">
+          <h2>Camera Feeds</h2>
+          <button className="add-camera-button" onClick={handleAddCamera}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Add Camera
+          </button>
+        </div>
         <div className="cameras-grid">
           {room.cameras.map((camera) => {
             const alertLevel = getAlertLevel(camera.studentId);

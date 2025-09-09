@@ -12,6 +12,7 @@ export interface ExamRoom {
   name: string;
   status: 'active' | 'inactive';
   studentsCount: number;
+  floor: number;
   cameras: Camera[];
 }
 

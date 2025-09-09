@@ -60,11 +60,45 @@
   margin-top: 2rem;
 }
 
-.camera-previews h2 {
+.cameras-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.cameras-header h2 {
   font-size: 1.5rem;
   font-weight: 600;
   color: #374151;
-  margin-bottom: 1.5rem;
+  margin: 0;
+}
+
+.cameras-header .add-camera-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cameras-header .add-camera-button:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.cameras-header .add-camera-button:active {
+  transform: translateY(0);
 }
 
 .cameras-grid {
@@ -94,13 +128,24 @@
     flex-wrap: wrap;
   }
   
+  .cameras-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .cameras-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .cameras-header .add-camera-button {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.8rem;
+  }
+  
   .cameras-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-  }
-  
-  .camera-previews h2 {
-    font-size: 1.25rem;
   }
 }
 
@@ -116,6 +161,15 @@
   .room-stats {
     flex-direction: column;
     gap: 0.5rem;
+  }
+  
+  .cameras-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .cameras-header .add-camera-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
   }
   
   .cameras-grid {

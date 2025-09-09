@@ -3,15 +3,9 @@ import './CameraPreview.css';
 
 function CameraPreview({ camera, alertLevel, onClick }: CameraPreviewProps): JSX.Element {
   return (
-    <div className={`camera-preview ${alertLevel !== 'none' ? `alert-${alertLevel}` : ''}`} onClick={onClick}>
+    <div className="camera-preview" onClick={onClick}>
       <div className="camera-header">
         <h3 className="camera-name">{camera.name}</h3>
-        {alertLevel !== 'none' && (
-          <div className={`alert-indicator ${alertLevel}`}>
-            <span className="alert-dot"></span>
-            {alertLevel === 'red' ? 'HIGH' : 'CAUTION'}
-          </div>
-        )}
       </div>
       
       <div className="camera-feed">
@@ -26,14 +20,9 @@ function CameraPreview({ camera, alertLevel, onClick }: CameraPreviewProps): JSX
       </div>
       
       <div className="camera-info">
-        <div className="student-info">
-          <span className="student-name">{camera.studentName}</span>
-          <span className="student-id">ID: {camera.studentId}</span>
-        </div>
-        
         <div className="camera-status">
           <span className="status-dot active"></span>
-          <span>Live</span>
+          <span>Live Camera Feed</span>
         </div>
       </div>
       

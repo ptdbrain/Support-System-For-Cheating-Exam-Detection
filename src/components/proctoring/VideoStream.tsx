@@ -37,9 +37,8 @@ function VideoStream({ camera, isRecording }: VideoStreamProps): JSX.Element {
       
       <div className="video-info">
         <div className="student-details">
-          <h2>{camera.studentName}</h2>
-          <p>Student ID: {camera.studentId}</p>
-          <p>Camera: {camera.name}</p>
+          <h2>Camera: {camera.name}</h2>
+          <p>Live Camera Feed</p>
         </div>
         
         <div className="stream-quality">

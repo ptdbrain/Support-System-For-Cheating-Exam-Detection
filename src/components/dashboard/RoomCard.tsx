@@ -16,7 +16,7 @@ function RoomCard({ room, onClick }: RoomCardProps): JSX.Element {
           <div className="stat-item">
             <span className="stat-icon">👥</span>
             <span className="stat-value">{room.studentsCount}</span>
-            <span className="stat-label">Students</span>
+            <span className="stat-label">Slots</span>
           </div>
           
           <div className="stat-item">
