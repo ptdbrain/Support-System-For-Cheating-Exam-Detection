@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext.js';
-import VideoStream from '../components/proctoring/VideoStream.js';
-import ProctoringPanel from '../components/proctoring/ProctoringPanel.js';
-import BackButton from '../components/common/BackButton.js';
-import AlertBanner from '../components/common/AlertBanner.js';
+import { useProctoring } from '../context/ProctoringContext';
+import VideoStream from '../components/proctoring/VideoStream';
+import ProctoringPanel from '../components/proctoring/ProctoringPanel';
+import BackButton from '../components/common/BackButton';
+import AlertBanner from '../components/common/AlertBanner';
 import './LiveProctoring.css';
 
 function LiveProctoring(): JSX.Element {
@@ -26,21 +26,22 @@ function LiveProctoring(): JSX.Element {
     );
   }
 
-  const alertLevel = getAlertLevel(camera.studentId);
-  const behaviorData = studentBehaviors[camera.studentId] || { count: 0, events: [] };
+  // Since we removed student tracking from cameras, use camera-based logic
+  const alertLevel = 'none';
+  const behaviorData = { count: 0, events: [] };
 
   const handleNotifySuspicious = (): void => {
-    logSuspiciousBehavior(camera.studentId, 'Suspicious behavior flagged by proctor');
+    // Since no student tracking, we'll use camera id as reference
+    console.log(`Suspicious behavior flagged for ${camera.name}`);
   };
 
   const handleRecordBehavior = (): void => {
     if (isRecording) {
       setIsRecording(false);
-      // In a real app, you would stop the actual recording here
+      console.log(`Recording stopped for ${camera.name}`);
     } else {
       setIsRecording(true);
-      recordBehavior(camera.studentId);
-      // In a real app, you would start the actual recording here
+      console.log(`Recording started for ${camera.name}`);
       // Auto-stop recording after 30 seconds for demo purposes
       setTimeout(() => {
         setIsRecording(false);
@@ -68,8 +69,8 @@ function LiveProctoring(): JSX.Element {
         <div className="sidebar">
           <ProctoringPanel
             student={{
-              id: camera.studentId,
-              name: camera.studentName
+              id: camera.id,
+              name: camera.name
             }}
             behaviorData={behaviorData}
             alertLevel={alertLevel}

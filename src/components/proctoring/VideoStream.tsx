@@ -1,4 +1,4 @@
-import { VideoStreamProps } from '../../types/index.js';
+import { VideoStreamProps } from '../../types/index';
 import './VideoStream.css';
 
 function VideoStream({ camera, isRecording }: VideoStreamProps): JSX.Element {

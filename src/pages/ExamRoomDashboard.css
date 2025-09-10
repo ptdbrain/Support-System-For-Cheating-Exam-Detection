@@ -5,9 +5,26 @@
 }
 
 .dashboard-header {
-  text-align: center;
   margin-bottom: 3rem;
   position: relative;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-text {
+  flex: 1;
+  text-align: center;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .dashboard-header h1 {
@@ -24,16 +41,16 @@
 .dashboard-header p {
   font-size: 1.125rem;
   color: #64748b;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
-.add-rooms-button {
+.add-rooms-button,
+.delete-button,
+.confirm-delete-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -42,6 +59,12 @@
   transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.add-rooms-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
 }
 
 .add-rooms-button:hover {
@@ -51,6 +74,42 @@
 }
 
 .add-rooms-button:active {
+  transform: translateY(0);
+}
+
+.delete-button {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.delete-button.active {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.delete-button:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.delete-button.active:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.confirm-delete-button {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+}
+
+.confirm-delete-button:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.confirm-delete-button:active,
+.delete-button:active {
   transform: translateY(0);
 }
 

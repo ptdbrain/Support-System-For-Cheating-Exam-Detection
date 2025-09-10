@@ -1,12 +1,14 @@
 # Online Examination Proctoring System
 
-A professional web application built with React for real-time monitoring of online examinations, enabling proctors to track and record suspicious student behavior during exams.
+A local React web application for monitoring online examinations, enabling proctors to track and record suspicious student behavior during exams. This is a frontend-only application with mock data for demonstration purposes.
+
+> **⚠️ Important Note**: This application runs entirely in the browser with no backend server requirements. All data is simulated and stored locally in memory. No real video streaming or server communication is implemented.
 
 ## 🎯 Features
 
 ### Core Functionality
 - **Multi-page Interface**: Navigate seamlessly between exam rooms and individual camera feeds
-- **Real-time Monitoring**: Live camera feed previews and full-screen monitoring
+- **Mock Camera Monitoring**: Simulated camera feed previews and full-screen monitoring interface
 - **Behavioral Tracking**: Log and track suspicious behaviors with timestamps
 - **Alert System**: Visual indicators for students with concerning behavior patterns
 - **Recording Capability**: Initiate video recordings of suspicious events
@@ -70,17 +72,17 @@ src/
    npm install
    ```
 
-3. **Start the development server**
+3. **Start the local development server**
    ```bash
-   npm start
+   npm run dev
    ```
 
 4. **Open your browser**
-   Navigate to `http://localhost:3000` to view the application
+   Navigate to `http://localhost:3000` to view the local application
 
 ### Available Scripts
 
-- `npm start` - Runs the app in development mode
+- `npm run dev` - Runs the app in local development mode
 - `npm test` - Launches the test runner
 - `npm run build` - Builds the app for production
 - `npm run eject` - Ejects from Create React App (one-way operation)
@@ -114,18 +116,19 @@ The application is fully responsive and optimized for:
 ## 🔧 State Management
 
 Uses React Context API for global state management:
-- **Exam Rooms**: Mock data for demonstration
-- **Student Behaviors**: Tracking suspicious behavior counts
-- **Alert System**: Real-time alert level calculations
-- **Event Logging**: Timestamped behavior events
+- **Exam Rooms**: Local mock data for demonstration
+- **Student Behaviors**: Local tracking of suspicious behavior counts
+- **Alert System**: Client-side alert level calculations
+- **Event Logging**: Local timestamped behavior events (stored in memory only)
 
-## 🎭 Mock Data
+## 🎭 Local Mock Data
 
-The application includes realistic mock data:
-- 3 active examination rooms
-- 6 students with varying behavior patterns
-- Sample camera feeds and student information
+The application includes realistic local mock data:
+- 16 examination rooms across 2 floors
+- 32 students with varying behavior patterns
+- Sample camera feed simulations and student information
 - Pre-populated behavior events for demonstration
+- All data is stored locally in memory and resets on page refresh
 
 ## 🔮 Future Enhancements
 
@@ -140,8 +143,10 @@ The application includes realistic mock data:
 - **Keyboard Shortcuts**: Power user features
 
 ### Technical Improvements
+- **Backend Integration**: Connect to server infrastructure
 - **WebRTC Integration**: Real-time video streaming
 - **WebSocket Support**: Live updates and notifications
+- **Database Integration**: Persistent data storage
 - **Progressive Web App**: Offline functionality
 - **Performance Optimization**: Code splitting and lazy loading
 

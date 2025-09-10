@@ -3,8 +3,6 @@
 export interface Camera {
   id: string;
   name: string;
-  studentId: string;
-  studentName: string;
 }
 
 export interface ExamRoom {
@@ -41,18 +39,26 @@ export interface ProctoringContextType {
   logSuspiciousBehavior: (studentId: string, description?: string) => void;
   recordBehavior: (studentId: string) => void;
   getAlertLevel: (studentId: string) => AlertLevel;
+  addRoom: (room: ExamRoom) => void;
+  deleteRooms: (roomIds: string[]) => void;
+  addCamera: (roomId: string, camera: Camera) => void;
+  deleteCameras: (roomId: string, cameraIds: string[]) => void;
 }
 
 // Component prop types
 export interface RoomCardProps {
   room: ExamRoom;
   onClick: () => void;
+  isDeleteMode?: boolean;
+  isSelected?: boolean;
 }
 
 export interface CameraPreviewProps {
   camera: Camera;
   alertLevel: AlertLevel;
   onClick: () => void;
+  isDeleteMode?: boolean;
+  isSelected?: boolean;
 }
 
 export interface AlertBannerProps {

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ProctoringProvider } from './context/ProctoringContext.js';
-import ExamRoomDashboard from './pages/ExamRoomDashboard.js';
-import RoomMonitoring from './pages/RoomMonitoring.js';
-import LiveProctoring from './pages/LiveProctoring.js';
-import Header from './components/common/Header.js';
+import { ProctoringProvider } from './context/ProctoringContext';
+import ExamRoomDashboard from './pages/ExamRoomDashboard';
+import RoomMonitoring from './pages/RoomMonitoring';
+import LiveProctoring from './pages/LiveProctoring';
+import Header from './components/common/Header';
 import './styles/App.css';
 
 function App(): JSX.Element {

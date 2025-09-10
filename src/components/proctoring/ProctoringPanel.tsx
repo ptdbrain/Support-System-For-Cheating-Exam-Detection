@@ -1,17 +1,15 @@
-import { ProctoringPanelProps } from '../../types/index.js';
+import { ProctoringPanelProps } from '../../types/index';
 import './ProctoringPanel.css';
 
 function ProctoringPanel({ 
-  student, 
-  behaviorData, 
-  alertLevel, 
+  student: _student, 
+  behaviorData: _behaviorData, 
+  alertLevel: _alertLevel, 
   isRecording, 
   onNotifySuspicious, 
   onRecordBehavior 
 }: ProctoringPanelProps): JSX.Element {
-  const formatTimestamp = (timestamp: string): string => {
-    return new Date(timestamp).toLocaleString();
-  };
+  // formatTimestamp function removed as it's not used in current implementation
 
   return (
     <div className="proctoring-panel">

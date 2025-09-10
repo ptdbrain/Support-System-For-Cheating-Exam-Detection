@@ -6,6 +6,32 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.camera-preview.delete-mode {
+  border-color: #fbbf24;
+  background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.camera-preview.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.camera-checkbox {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+
+.camera-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #3b82f6;
 }
 
 .camera-preview:hover {
@@ -27,8 +53,9 @@
   font-size: 1.125rem;
   font-weight: 600;
   color: #1e293b;
-  margin: 0;
+  margin: 0 0 0.25rem 0;
 }
+
 
 
 .camera-feed {

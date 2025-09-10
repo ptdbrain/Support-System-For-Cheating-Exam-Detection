@@ -1,4 +1,4 @@
-import { AlertBannerProps } from '../../types/index.js';
+import { AlertBannerProps } from '../../types/index';
 import './AlertBanner.css';
 
 function AlertBanner({ level, count, studentName }: AlertBannerProps): JSX.Element | null {

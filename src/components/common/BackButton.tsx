@@ -1,4 +1,4 @@
-import { BackButtonProps } from '../../types/index.js';
+import { BackButtonProps } from '../../types/index';
 import './BackButton.css';
 
 function BackButton({ onClick, label = 'Back' }: BackButtonProps): JSX.Element {

@@ -1,9 +1,22 @@
-import { RoomCardProps } from '../../types/index.js';
+import { RoomCardProps } from '../../types/index';
 import './RoomCard.css';
 
-function RoomCard({ room, onClick }: RoomCardProps): JSX.Element {
+function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: RoomCardProps): JSX.Element {
   return (
-    <div className="room-card" onClick={onClick}>
+    <div className={`room-card ${isDeleteMode ? 'delete-mode' : ''} ${isSelected ? 'selected' : ''}`} onClick={onClick}>
+      {isDeleteMode && (
+        <div className="room-checkbox">
+          <input 
+            type="checkbox" 
+            checked={isSelected}
+            onChange={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
       <div className="room-card-header">
         <h3 className="room-name">{room.name}</h3>
         <span className={`status-badge ${room.status}`}>

@@ -67,6 +67,12 @@
   margin-bottom: 1.5rem;
 }
 
+.camera-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
 .cameras-header h2 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -74,13 +80,13 @@
   margin: 0;
 }
 
-.cameras-header .add-camera-button {
+.add-camera-button,
+.delete-camera-button,
+.confirm-delete-camera-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -89,15 +95,54 @@
   transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
-.cameras-header .add-camera-button:hover {
+.add-camera-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.delete-camera-button {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.delete-camera-button.active {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.confirm-delete-camera-button {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+}
+
+.add-camera-button:hover {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-.cameras-header .add-camera-button:active {
+.delete-camera-button:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.delete-camera-button.active:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.confirm-delete-camera-button:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.add-camera-button:active,
+.delete-camera-button:active,
+.confirm-delete-camera-button:active {
   transform: translateY(0);
 }
 

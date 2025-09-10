@@ -1,11 +1,26 @@
-import { CameraPreviewProps } from '../../types/index.js';
+import { CameraPreviewProps } from '../../types/index';
 import './CameraPreview.css';
 
-function CameraPreview({ camera, alertLevel, onClick }: CameraPreviewProps): JSX.Element {
+function CameraPreview({ camera, alertLevel, onClick, isDeleteMode = false, isSelected = false }: CameraPreviewProps): JSX.Element {
   return (
-    <div className="camera-preview" onClick={onClick}>
+    <div className={`camera-preview ${isDeleteMode ? 'delete-mode' : ''} ${isSelected ? 'selected' : ''}`} onClick={onClick}>
+      {isDeleteMode && (
+        <div className="camera-checkbox">
+          <input 
+            type="checkbox" 
+            checked={isSelected}
+            onChange={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
       <div className="camera-header">
-        <h3 className="camera-name">{camera.name}</h3>
+        <div>
+          <h3 className="camera-name">{camera.name}</h3>
+        </div>
       </div>
       
       <div className="camera-feed">

@@ -1,12 +1,16 @@
 import { createContext, useContext, useReducer, ReactNode } from 'react';
-import { ExamRoom, StudentBehavior, AlertLevel, ProctoringContextType } from '../types/index.js';
+import { ExamRoom, Camera, StudentBehavior, AlertLevel, ProctoringContextType } from '../types/index';
 
 const ProctoringContext = createContext<ProctoringContextType | undefined>(undefined);
 
 // Action types
 type ProctoringAction = 
   | { type: 'LOG_SUSPICIOUS_BEHAVIOR'; payload: { studentId: string; timestamp: string; description: string } }
-  | { type: 'RECORD_BEHAVIOR'; payload: { studentId: string; timestamp: string } };
+  | { type: 'RECORD_BEHAVIOR'; payload: { studentId: string; timestamp: string } }
+  | { type: 'ADD_ROOM'; payload: { room: ExamRoom } }
+  | { type: 'DELETE_ROOMS'; payload: { roomIds: string[] } }
+  | { type: 'ADD_CAMERA'; payload: { roomId: string; camera: Camera } }
+  | { type: 'DELETE_CAMERAS'; payload: { roomId: string; cameraIds: string[] } };
 
 interface ProctoringState {
   examRooms: ExamRoom[];
@@ -24,8 +28,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-001', studentName: 'John Doe' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-002', studentName: 'Jane Smith' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -35,8 +39,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-003', studentName: 'Mike Johnson' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-004', studentName: 'Sarah Wilson' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -46,8 +50,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-005', studentName: 'David Brown' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-006', studentName: 'Emily Davis' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -57,8 +61,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-007', studentName: 'Robert Taylor' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-008', studentName: 'Lisa Anderson' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -68,8 +72,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-025', studentName: 'Andrew Walker' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-026', studentName: 'Michelle Hall' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -79,8 +83,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-009', studentName: 'Michael Chen' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-010', studentName: 'Amanda White' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -90,8 +94,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-021', studentName: 'Steven Clark' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-022', studentName: 'Laura Rodriguez' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -101,8 +105,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 1,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-023', studentName: 'Mark Turner' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-024', studentName: 'Jessica Lewis' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     // Floor 2 Rooms
@@ -113,8 +117,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-011', studentName: 'James Wilson' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-012', studentName: 'Maria Garcia' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -124,8 +128,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-013', studentName: 'Christopher Lee' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-014', studentName: 'Jennifer Miller' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -135,8 +139,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-015', studentName: 'Daniel Martinez' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-016', studentName: 'Ashley Johnson' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -146,8 +150,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-027', studentName: 'Brian Young' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-028', studentName: 'Karen King' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -157,8 +161,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-017', studentName: 'Kevin Brown' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-018', studentName: 'Nicole Davis' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -168,8 +172,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-019', studentName: 'Ryan Thompson' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-020', studentName: 'Rachel Moore' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -179,8 +183,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-029', studentName: 'Gregory Scott' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-030', studentName: 'Samantha Green' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     },
     {
@@ -190,8 +194,8 @@ const initialState: ProctoringState = {
       studentsCount: 80,
       floor: 2,
       cameras: [
-        { id: 'cam1', name: 'CAM 1', studentId: 'student-031', studentName: 'Nathan Adams' },
-        { id: 'cam2', name: 'CAM 2', studentId: 'student-032', studentName: 'Stephanie Baker' }
+        { id: 'cam1', name: 'CAM 1' },
+        { id: 'cam2', name: 'CAM 2' }
       ]
     }
   ],
@@ -280,6 +284,38 @@ function proctoringReducer(state: ProctoringState, action: ProctoringAction): Pr
           }
         }
       };
+
+    case 'ADD_ROOM':
+      return {
+        ...state,
+        examRooms: [...state.examRooms, action.payload.room]
+      };
+
+    case 'DELETE_ROOMS':
+      return {
+        ...state,
+        examRooms: state.examRooms.filter(room => !action.payload.roomIds.includes(room.id))
+      };
+
+    case 'ADD_CAMERA':
+      return {
+        ...state,
+        examRooms: state.examRooms.map(room =>
+          room.id === action.payload.roomId
+            ? { ...room, cameras: [...room.cameras, action.payload.camera] }
+            : room
+        )
+      };
+
+    case 'DELETE_CAMERAS':
+      return {
+        ...state,
+        examRooms: state.examRooms.map(room =>
+          room.id === action.payload.roomId
+            ? { ...room, cameras: room.cameras.filter(camera => !action.payload.cameraIds.includes(camera.id)) }
+            : room
+        )
+      };
       
     default:
       return state;
@@ -318,11 +354,31 @@ export function ProctoringProvider({ children }: { children: ReactNode }) {
     return 'red';
   };
 
+  const addRoom = (room: ExamRoom) => {
+    dispatch({ type: 'ADD_ROOM', payload: { room } });
+  };
+
+  const deleteRooms = (roomIds: string[]) => {
+    dispatch({ type: 'DELETE_ROOMS', payload: { roomIds } });
+  };
+
+  const addCamera = (roomId: string, camera: Camera) => {
+    dispatch({ type: 'ADD_CAMERA', payload: { roomId, camera } });
+  };
+
+  const deleteCameras = (roomId: string, cameraIds: string[]) => {
+    dispatch({ type: 'DELETE_CAMERAS', payload: { roomId, cameraIds } });
+  };
+
   const value: ProctoringContextType = {
     ...state,
     logSuspiciousBehavior,
     recordBehavior,
-    getAlertLevel
+    getAlertLevel,
+    addRoom,
+    deleteRooms,
+    addCamera,
+    deleteCameras
   };
 
   return (
