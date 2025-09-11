@@ -23,7 +23,7 @@
 .camera-checkbox {
   position: absolute;
   top: 12px;
-  left: 12px;
+  right: 12px;
   z-index: 2;
 }
 
@@ -153,6 +153,16 @@
 @media (max-width: 768px) {
   .camera-preview {
     border-radius: 0.75rem;
+  }
+  
+  .camera-checkbox {
+    top: 8px;
+    right: 8px;
+  }
+  
+  .camera-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
   }
   
   .camera-header {

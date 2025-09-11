@@ -23,7 +23,7 @@
 .room-checkbox {
   position: absolute;
   top: 12px;
-  left: 12px;
+  right: 12px;
   z-index: 2;
 }
 
@@ -176,6 +176,16 @@
 @media (max-width: 768px) {
   .room-card {
     padding: 1.25rem;
+  }
+  
+  .room-checkbox {
+    top: 8px;
+    right: 8px;
+  }
+  
+  .room-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
   }
   
   .room-name {
