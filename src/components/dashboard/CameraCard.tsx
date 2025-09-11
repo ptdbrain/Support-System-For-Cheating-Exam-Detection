@@ -11,32 +11,55 @@ import {
   Divider
 } from '@mui/material';
 import { 
-  Groups as GroupsIcon, 
   Videocam as VideocamIcon, 
-  Visibility as VisibilityIcon 
+  Visibility as VisibilityIcon,
+  Room as RoomIcon
 } from '@mui/icons-material';
-import { RoomCardProps } from '../../types/index';
-import { statusColors } from '../../theme/theme';
 
-function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: RoomCardProps): JSX.Element {
-  const handleClick = (event: React.MouseEvent) => {
+interface ExtendedCamera {
+  id: string;
+  name: string;
+  roomId: string;
+  roomName: string;
+  displayName: string;
+}
+
+interface CameraCardProps {
+  camera: ExtendedCamera;
+  onClick: () => void;
+  isDeleteMode?: boolean;
+  isSelected?: boolean;
+}
+
+function CameraCard({ camera, onClick, isDeleteMode = false, isSelected = false }: CameraCardProps): JSX.Element {
+  
+  const handleClick = (): void => {
     if (isDeleteMode) {
       event.stopPropagation();
     }
     onClick();
   };
 
-  // Extract numeric part from room name (e.g., "Room 101" -> "101")
+  // Extract camera number from camera name (e.g., "CAM 1" -> "1")
+  const getCameraNumber = (cameraName: string): string => {
+    const match = cameraName.match(/\d+/);
+    return match ? match[0] : cameraName;
+  };
+
+  // Extract room number from room name (e.g., "Room 101" -> "101")
   const getRoomNumber = (roomName: string): string => {
     const match = roomName.match(/\d+/);
     return match ? match[0] : roomName;
   };
+
 
   return (
     <Card 
       sx={{ 
         height: 420,
         minHeight: 420,
+        maxHeight: 420,
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -69,21 +92,21 @@ function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: R
       <CardContent sx={{ pb: 1, p: 3 }}>
         <Box sx={{ mb: 3 }}>
           <Typography variant="h5" component="h3" sx={{ fontWeight: 600, fontSize: '1.5rem' }}>
-            {getRoomNumber(room.name)}
+            {camera.displayName}
           </Typography>
         </Box>
         
         <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Avatar sx={{ bgcolor: 'primary.light', width: 48, height: 48 }}>
-              <GroupsIcon sx={{ fontSize: 24 }} />
+              <RoomIcon sx={{ fontSize: 24 }} />
             </Avatar>
             <Box>
               <Typography variant="h4" component="span" sx={{ fontWeight: 600, fontSize: '2rem' }}>
-                {room.studentsCount}
+                {getRoomNumber(camera.roomName)}
               </Typography>
               <Typography variant="body1" display="block" color="text.secondary" sx={{ fontSize: '1rem' }}>
-                Slots
+                Room
               </Typography>
             </Box>
           </Box>
@@ -94,10 +117,10 @@ function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: R
             </Avatar>
             <Box>
               <Typography variant="h4" component="span" sx={{ fontWeight: 600, fontSize: '2rem' }}>
-                {room.cameras.length}
+                {getCameraNumber(camera.name)}
               </Typography>
               <Typography variant="body1" display="block" color="text.secondary" sx={{ fontSize: '1rem' }}>
-                Cameras
+                Camera
               </Typography>
             </Box>
           </Box>
@@ -106,19 +129,34 @@ function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: R
         <Divider sx={{ my: 3 }} />
         
         <Box>
-          <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600, fontSize: '1.1rem' }}>
-            Active Cameras:
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: 'text.primary' }}>
+            Camera Details:
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {room.cameras.map((camera) => (
-              <Chip
-                key={camera.id}
-                label={camera.name}
-                size="medium"
-                variant="outlined"
-                sx={{ fontSize: '0.875rem', fontWeight: 500 }}
-              />
-            ))}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="body2" color="text.secondary">
+                Location:
+              </Typography>
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                {camera.roomName}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="body2" color="text.secondary">
+                Resolution:
+              </Typography>
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                1920x1080
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="body2" color="text.secondary">
+                FPS:
+              </Typography>
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                30
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </CardContent>
@@ -145,11 +183,11 @@ function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: R
             }
           }}
         >
-          Monitor Room
+          Monitor Camera
         </Button>
       </CardActions>
     </Card>
   );
 }
 
-export default RoomCard;
+export default CameraCard;

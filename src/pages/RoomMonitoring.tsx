@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Button, Fade } from '@mui/material';
+import { Add as AddIcon, Delete as DeleteIcon, Check as CheckIcon } from '@mui/icons-material';
 import { useProctoring } from '../context/ProctoringContext';
 import CameraPreview from '../components/monitoring/CameraPreview';
 import BackButton from '../components/common/BackButton';
@@ -9,7 +11,7 @@ import './RoomMonitoring.css';
 function RoomMonitoring(): JSX.Element {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const { examRooms, getAlertLevel, addCamera, deleteCameras } = useProctoring();
+  const { examRooms, addCamera, deleteCameras } = useProctoring();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedCameras, setSelectedCameras] = useState<string[]>([]);
@@ -77,31 +79,48 @@ function RoomMonitoring(): JSX.Element {
 
       <div className="camera-previews">
         <div className="cameras-header">
-          <h2>Camera Feeds</h2>
           <div className="camera-actions">
-            <button className="add-camera-button" onClick={handleAddCamera}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Add Camera
-            </button>
-            <button 
-              className={`delete-camera-button ${isDeleteMode ? 'active' : ''}`} 
-              onClick={handleToggleDeleteMode}
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={handleAddCamera}
+              sx={{
+                backgroundColor: '#8CCDEB',
+                color: '#0B1D51',
+                fontWeight: 600,
+                '&:hover': { backgroundColor: '#5a9fd4' }
+              }}
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 3V2C6 1.45 6.45 1 7 1H9C9.55 1 10 1.45 10 2V3H12C12.55 3 13 3.45 13 4S12.55 5 12 5H11V13C11 14.1 10.1 15 9 15H7C5.9 15 5 14.1 5 13V5H4C3.45 5 3 4.55 3 4S3.45 3 4 3H6ZM8 2V3H8V2ZM7 5V13H9V5H7Z" fill="currentColor"/>
-              </svg>
+              Add Camera
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<DeleteIcon />}
+              onClick={handleToggleDeleteMode}
+              sx={{
+                backgroundColor: '#ef4444',
+                color: 'white',
+                fontWeight: 600,
+                '&:hover': { backgroundColor: '#dc2626' }
+              }}
+            >
               {isDeleteMode ? 'Cancel' : 'Delete'}
-            </button>
-            {isDeleteMode && selectedCameras.length > 0 && (
-              <button className="confirm-delete-camera-button" onClick={handleDeleteCameras}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13.707 4.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-3-3a1 1 0 011.414-1.414L7 9.586l5.293-5.293a1 1 0 011.414 0z" fill="currentColor"/>
-                </svg>
+            </Button>
+            <Fade in={isDeleteMode && selectedCameras.length > 0}>
+              <Button
+                variant="contained"
+                startIcon={<CheckIcon />}
+                onClick={handleDeleteCameras}
+                sx={{
+                  backgroundColor: '#ef4444',
+                  color: 'white',
+                  fontWeight: 600,
+                  '&:hover': { backgroundColor: '#dc2626' }
+                }}
+              >
                 Delete {selectedCameras.length}
-              </button>
-            )}
+              </Button>
+            </Fade>
           </div>
         </div>
         <div className="cameras-grid">

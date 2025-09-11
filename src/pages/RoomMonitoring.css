@@ -62,7 +62,7 @@
 
 .cameras-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 1.5rem;
 }
@@ -150,6 +150,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 2rem;
+  align-items: stretch;
 }
 
 /* Responsive design */

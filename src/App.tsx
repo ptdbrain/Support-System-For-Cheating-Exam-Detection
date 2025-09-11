@@ -4,6 +4,7 @@ import { CssBaseline, Box } from '@mui/material';
 import { ProctoringProvider } from './context/ProctoringContext';
 import { theme } from './theme/theme';
 import ExamRoomDashboard from './pages/ExamRoomDashboard';
+import CamerasPage from './pages/CamerasPage';
 import RoomMonitoring from './pages/RoomMonitoring';
 import LiveProctoring from './pages/LiveProctoring';
 import Sidebar from './components/common/Sidebar';
@@ -33,7 +34,7 @@ function App(): JSX.Element {
             >
               <Routes>
                 <Route path="/" element={<ExamRoomDashboard />} />
-                <Route path="/cameras" element={<div>Cameras Page (Coming Soon)</div>} />
+                <Route path="/cameras" element={<CamerasPage />} />
                 <Route path="/settings" element={<div>Settings Page (Coming Soon)</div>} />
                 <Route path="/room/:roomId" element={<RoomMonitoring />} />
                 <Route path="/room/:roomId/camera/:cameraId" element={<LiveProctoring />} />
