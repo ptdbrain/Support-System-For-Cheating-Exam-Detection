@@ -14,7 +14,7 @@
 .panel-header h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #0B1D51;
   margin: 0 0 1rem 0;
 }
 
@@ -36,13 +36,13 @@
 }
 
 .alert-status.orange {
-  background-color: #fef3c7;
-  color: #92400e;
+  background-color: #ffeaa7;
+  color: #e6c876;
 }
 
 .alert-status.none {
-  background-color: #d1fae5;
-  color: #065f46;
+  background-color: #e6f7ff;
+  color: #0B1D51;
 }
 
 .alert-icon {
@@ -57,7 +57,7 @@
 .student-summary h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: #374151;
+  color: #0B1D51;
   margin: 0 0 1rem 0;
 }
 
@@ -74,13 +74,13 @@
 
 .label {
   font-size: 0.875rem;
-  color: #64748b;
+  color: #725CAD;
   font-weight: 500;
 }
 
 .value {
   font-size: 0.875rem;
-  color: #1e293b;
+  color: #0B1D51;
   font-weight: 600;
 }
 
@@ -94,11 +94,11 @@
 }
 
 .value.count.none {
-  background-color: #10b981;
+  background-color: #8CCDEB;
 }
 
 .value.count.orange {
-  background-color: #f59e0b;
+  background-color: #FFE3A9;
 }
 
 .value.count.red {
@@ -130,12 +130,12 @@
 }
 
 .action-button.suspicious {
-  background-color: #f59e0b;
-  color: white;
+  background-color: #FFE3A9;
+  color: #0B1D51;
 }
 
 .action-button.suspicious:hover {
-  background-color: #d97706;
+  background-color: #e6c876;
   transform: translateY(-1px);
 }
 
@@ -169,7 +169,7 @@
 .behavior-log h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: #374151;
+  color: #0B1D51;
   margin: 0 0 1rem 0;
 }
 
@@ -183,7 +183,7 @@
   align-items: center;
   justify-content: center;
   height: 100px;
-  color: #9ca3af;
+  color: #725CAD;
   font-style: italic;
   text-align: center;
 }
@@ -202,8 +202,8 @@
 }
 
 .event-item.suspicious {
-  border-left-color: #f59e0b;
-  background-color: #fefbf2;
+  border-left-color: #FFE3A9;
+  background-color: #ffeaa7;
 }
 
 .event-item.recording {
@@ -229,7 +229,7 @@
 }
 
 .event-type.suspicious {
-  color: #92400e;
+  color: #e6c876;
 }
 
 .event-type.recording {
@@ -238,12 +238,12 @@
 
 .event-time {
   font-size: 0.7rem;
-  color: #6b7280;
+  color: #725CAD;
 }
 
 .event-description {
   font-size: 0.8rem;
-  color: #374151;
+  color: #0B1D51;
   line-height: 1.4;
 }
 
@@ -257,7 +257,7 @@
   display: flex;
   align-items: center;
   font-size: 0.875rem;
-  color: #059669;
+  color: #8CCDEB;
   font-weight: 500;
 }
 
@@ -265,7 +265,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #10b981;
+  background-color: #8CCDEB;
   margin-right: 0.5rem;
   animation: pulse 2s infinite;
 }

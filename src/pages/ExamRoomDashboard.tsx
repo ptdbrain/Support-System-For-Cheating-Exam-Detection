@@ -1,9 +1,24 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  Container, 
+  Typography, 
+  Box, 
+  Button, 
+  Grid, 
+  Paper,
+  Chip,
+  Fade,
+  Pagination
+} from '@mui/material';
+import { 
+  Add as AddIcon, 
+  Delete as DeleteIcon, 
+  Check as CheckIcon 
+} from '@mui/icons-material';
 import { useProctoring } from '../context/ProctoringContext';
 import RoomCard from '../components/dashboard/RoomCard';
 import AddRoomModal from '../components/common/AddRoomModal';
-import './ExamRoomDashboard.css';
 
 function ExamRoomDashboard(): JSX.Element {
   const navigate = useNavigate();
@@ -11,6 +26,15 @@ function ExamRoomDashboard(): JSX.Element {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const roomsPerPage = 8;
+  const totalPages = Math.ceil(examRooms.length / roomsPerPage);
+  
+  // Calculate rooms for current page
+  const startIndex = (currentPage - 1) * roomsPerPage;
+  const endIndex = startIndex + roomsPerPage;
+  const currentRooms = examRooms.slice(startIndex, endIndex);
 
   const handleRoomClick = (roomId: string): void => {
     if (isDeleteMode) {
@@ -43,83 +67,131 @@ function ExamRoomDashboard(): JSX.Element {
     setSelectedRooms([]);
   };
 
-  // Group rooms by floor
-  const roomsByFloor = examRooms.reduce((acc, room) => {
-    if (!acc[room.floor]) {
-      acc[room.floor] = [];
-    }
-    acc[room.floor].push(room);
-    return acc;
-  }, {} as Record<number, typeof examRooms>);
+  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number): void => {
+    setCurrentPage(page);
+    // Clear selections when changing pages
+    setSelectedRooms([]);
+  };
 
   return (
-    <div className="exam-room-dashboard">
-      <div className="dashboard-header">
-        <div className="header-content">
-          <div className="header-text">
-            <h1>Examination Rooms Dashboard</h1>
-            <p>Monitor active examination rooms and student activities</p>
-          </div>
-          <div className="header-actions">
-            <button className="add-rooms-button" onClick={handleAddRooms}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 4V16M4 10H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Add Rooms
-            </button>
-            <button 
-              className={`delete-button ${isDeleteMode ? 'active' : ''}`} 
-              onClick={handleToggleDeleteMode}
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 4V2C7 1.45 7.45 1 8 1H12C12.55 1 13 1.45 13 2V4H16C16.55 4 17 4.45 17 5S16.55 6 16 6H15V16C15 17.1 14.1 18 13 18H7C5.9 18 5 17.1 5 16V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H11V3H9ZM7 6V16H13V6H7Z" fill="currentColor"/>
-              </svg>
-              {isDeleteMode ? 'Cancel' : 'Delete'}
-            </button>
-            {isDeleteMode && selectedRooms.length > 0 && (
-              <button className="confirm-delete-button" onClick={handleDeleteRooms}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
-                </svg>
-                Delete {selectedRooms.length} Room(s)
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+    <Container maxWidth="xl">
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleAddRooms}
+          sx={{
+            backgroundColor: '#8CCDEB',
+            color: '#0B1D51',
+            '&:hover': {
+              backgroundColor: '#5a9fd4',
+            },
+            fontWeight: 600
+          }}
+        >
+          Add Rooms
+        </Button>
+        <Button
+          variant="contained"
+          startIcon={<DeleteIcon />}
+          onClick={handleToggleDeleteMode}
+          sx={{
+            backgroundColor: '#ef4444',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#dc2626',
+            },
+            fontWeight: 600
+          }}
+        >
+          {isDeleteMode ? 'Cancel' : 'Delete'}
+        </Button>
+        <Fade in={isDeleteMode && selectedRooms.length > 0}>
+          <Button
+            variant="contained"
+            startIcon={<CheckIcon />}
+            onClick={handleDeleteRooms}
+            sx={{ 
+              backgroundColor: '#ef4444',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#dc2626',
+              },
+              fontWeight: 600 
+            }}
+          >
+            Delete {selectedRooms.length} Room(s)
+          </Button>
+        </Fade>
+      </Box>
       
-      {Object.keys(roomsByFloor).length > 0 ? (
-        Object.keys(roomsByFloor)
-          .sort((a, b) => Number(a) - Number(b))
-          .map((floor) => (
-            <div key={floor} className="floor-section">
-              <div className="floor-header">
-                <h2>Floor {floor}</h2>
-                <div className="floor-stats">
-                  <span className="floor-info">
-                    {roomsByFloor[Number(floor)].length} rooms • {' '}
-                    {roomsByFloor[Number(floor)].filter(r => r.status === 'active').length} active
-                  </span>
-                </div>
-              </div>
-              <div className="rooms-grid">
-                {roomsByFloor[Number(floor)].map((room) => (
-                  <RoomCard
-                    key={room.id}
-                    room={room}
-                    onClick={() => handleRoomClick(room.id)}
-                    isDeleteMode={isDeleteMode}
-                    isSelected={selectedRooms.includes(room.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          ))
+      {examRooms.length > 0 ? (
+        <Box>
+          <Grid container spacing={4}>
+            {currentRooms.map((room) => (
+              <Grid item xs={12} sm={6} md={6} lg={4} key={room.id}>
+                <RoomCard
+                  room={room}
+                  onClick={() => handleRoomClick(room.id)}
+                  isDeleteMode={isDeleteMode}
+                  isSelected={selectedRooms.includes(room.id)}
+                />
+              </Grid>
+            ))}
+          </Grid>
+          
+          {totalPages > 1 && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 3 }}>
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                variant="outlined"
+                shape="rounded"
+                size="large"
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    '&.Mui-selected': {
+                      backgroundColor: '#8CCDEB',
+                      color: '#0B1D51',
+                      '&:hover': {
+                        backgroundColor: '#5a9fd4',
+                      },
+                    },
+                  },
+                }}
+              />
+            </Box>
+          )}
+          
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
+              Showing {startIndex + 1}-{Math.min(endIndex, examRooms.length)} of {examRooms.length} rooms
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Page {currentPage} of {totalPages}
+            </Typography>
+          </Box>
+        </Box>
       ) : (
-        <div className="empty-state">
-          <h2>No Examination Rooms</h2>
-          <p>There are currently no examination rooms configured. Click "Add Rooms" to get started.</p>
-        </div>
+        <Paper 
+          sx={{ 
+            p: 6, 
+            textAlign: 'center',
+            border: '2px dashed',
+            borderColor: 'grey.300',
+            backgroundColor: 'grey.50'
+          }}
+        >
+          <Typography variant="h4" component="h2" sx={{ mb: 2, color: 'text.secondary' }}>
+            No Examination Rooms
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 400, mx: 'auto' }}>
+            There are currently no examination rooms configured. Click "Add Rooms" to get started.
+          </Typography>
+        </Paper>
       )}
       
       <AddRoomModal
@@ -128,7 +200,7 @@ function ExamRoomDashboard(): JSX.Element {
         onAddRoom={addRoom}
         existingRooms={examRooms}
       />
-    </div>
+    </Container>
   );
 }
 

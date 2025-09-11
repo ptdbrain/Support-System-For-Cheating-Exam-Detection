@@ -10,7 +10,7 @@
   gap: 1rem;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #8CCDEB;
 }
 
 .room-info {
@@ -20,7 +20,7 @@
 .room-info h1 {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #0B1D51;
   margin-bottom: 0.5rem;
 }
 
@@ -33,11 +33,11 @@
   display: flex;
   align-items: center;
   font-size: 0.875rem;
-  color: #64748b;
+  color: #725CAD;
 }
 
 .stat strong {
-  color: #374151;
+  color: #0B1D51;
   margin-right: 0.25rem;
 }
 
@@ -52,8 +52,8 @@
 }
 
 .status.active {
-  background-color: #d1fae5;
-  color: #065f46;
+  background-color: #e6f7ff;
+  color: #0B1D51;
 }
 
 .camera-previews {
@@ -76,7 +76,7 @@
 .cameras-header h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #374151;
+  color: #0B1D51;
   margin: 0;
 }
 
@@ -99,43 +99,43 @@
 }
 
 .add-camera-button {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
+  background: #8CCDEB;
+  color: #0B1D51;
 }
 
 .delete-camera-button {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: #ef4444;
   color: white;
 }
 
 .delete-camera-button.active {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: #dc2626;
 }
 
 .confirm-delete-camera-button {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: #dc2626;
   color: white;
 }
 
 .add-camera-button:hover {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  background: #5a9fd4;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 12px rgba(140, 205, 235, 0.3);
 }
 
 .delete-camera-button:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: #dc2626;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .delete-camera-button.active:hover {
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  background: #b91c1c;
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
 .confirm-delete-camera-button:hover {
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  background: #b91c1c;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }

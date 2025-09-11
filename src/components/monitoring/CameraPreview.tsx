@@ -1,56 +1,135 @@
+import { 
+  Card, 
+  CardContent, 
+  CardActions, 
+  Typography, 
+  Box, 
+  Button, 
+  Checkbox,
+  Chip,
+  Paper
+} from '@mui/material';
+import { 
+  Videocam as VideocamIcon, 
+  Fullscreen as FullscreenIcon,
+  FiberManualRecord as DotIcon
+} from '@mui/icons-material';
 import { CameraPreviewProps } from '../../types/index';
-import './CameraPreview.css';
+import { alertColors } from '../../theme/theme';
 
 function CameraPreview({ camera, alertLevel, onClick, isDeleteMode = false, isSelected = false }: CameraPreviewProps): JSX.Element {
+  const handleClick = (event: React.MouseEvent) => {
+    if (isDeleteMode) {
+      event.stopPropagation();
+    }
+    onClick();
+  };
+
   return (
-    <div className={`camera-preview ${isDeleteMode ? 'delete-mode' : ''} ${isSelected ? 'selected' : ''}`} onClick={onClick}>
+    <Card 
+      sx={{ 
+        height: '100%',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        border: isSelected ? '2px solid' : '1px solid',
+        borderColor: isSelected ? 'error.main' : alertColors[alertLevel],
+        position: 'relative',
+        '&:hover': {
+          transform: isDeleteMode ? 'none' : 'translateY(-2px)',
+          boxShadow: isDeleteMode ? 2 : 4,
+        }
+      }}
+      onClick={handleClick}
+    >
       {isDeleteMode && (
-        <div className="camera-checkbox">
-          <input 
-            type="checkbox" 
+        <Box sx={{ position: 'absolute', top: 8, right: 8, zIndex: 2 }}>
+          <Checkbox
             checked={isSelected}
             onChange={(e) => {
               e.stopPropagation();
               onClick();
             }}
             onClick={(e) => e.stopPropagation()}
+            sx={{ p: 0 }}
           />
-        </div>
+        </Box>
       )}
-      <div className="camera-header">
-        <div>
-          <h3 className="camera-name">{camera.name}</h3>
-        </div>
-      </div>
       
-      <div className="camera-feed">
-        <div className="video-placeholder">
-          <div className="video-overlay">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M42 14L30 22V18C30 16.9 29.1 16 28 16H8C6.9 16 6 16.9 6 18V30C6 31.1 6.9 32 8 32H28C29.1 32 30 31.1 30 30V26L42 34V14Z" fill="currentColor"/>
-            </svg>
-            <span>Live Feed</span>
-          </div>
-        </div>
-      </div>
+      <CardContent sx={{ p: 2, pb: 1 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+            {camera.name}
+          </Typography>
+          {alertLevel !== 'none' && (
+            <Chip
+              size="small"
+              label={alertLevel.toUpperCase()}
+              sx={{
+                backgroundColor: alertColors[alertLevel],
+                color: 'white',
+                fontWeight: 600
+              }}
+            />
+          )}
+        </Box>
+        
+        <Paper 
+          sx={{ 
+            height: 200, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            backgroundColor: 'grey.900',
+            color: 'white',
+            mb: 2,
+            border: `2px solid ${alertColors[alertLevel]}`,
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          <Box sx={{ textAlign: 'center' }}>
+            <VideocamIcon sx={{ fontSize: 48, mb: 1, opacity: 0.7 }} />
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              Live Feed
+            </Typography>
+          </Box>
+        </Paper>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <DotIcon 
+            sx={{ 
+              color: '#10b981',
+              fontSize: 12,
+              animation: 'pulse 2s infinite',
+              '@keyframes pulse': {
+                '0%, 100%': { opacity: 1 },
+                '50%': { opacity: 0.5 }
+              }
+            }} 
+          />
+          <Typography variant="body2" color="success.main" sx={{ fontWeight: 500 }}>
+            Live Camera Feed
+          </Typography>
+        </Box>
+      </CardContent>
       
-      <div className="camera-info">
-        <div className="camera-status">
-          <span className="status-dot active"></span>
-          <span>Live Camera Feed</span>
-        </div>
-      </div>
-      
-      <div className="camera-actions">
-        <button className="view-button">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 2C4.5 2 1.73 4.11 1 7.5C1.73 10.89 4.5 13 8 13C11.5 13 14.27 10.89 15 7.5C14.27 4.11 11.5 2 8 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+      <CardActions sx={{ p: 2, pt: 0 }}>
+        <Button
+          variant="outlined"
+          startIcon={<FullscreenIcon />}
+          fullWidth
+          size="small"
+          onClick={(e) => {
+            if (!isDeleteMode) {
+              e.stopPropagation();
+              onClick();
+            }
+          }}
+        >
           View Full Screen
-        </button>
-      </div>
-    </div>
+        </Button>
+      </CardActions>
+    </Card>
   );
 }
 

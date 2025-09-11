@@ -1,6 +1,21 @@
 import { useState } from 'react';
+import { 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  DialogActions, 
+  TextField, 
+  Button, 
+  FormControl, 
+  InputLabel, 
+  Select, 
+  MenuItem, 
+  IconButton,
+  Box,
+  Typography
+} from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import { ExamRoom } from '../../types/index';
-import './AddRoomModal.css';
 
 interface AddRoomModalProps {
   isOpen: boolean;
@@ -9,12 +24,10 @@ interface AddRoomModalProps {
   existingRooms: ExamRoom[];
 }
 
-function AddRoomModal({ isOpen, onClose, onAddRoom, existingRooms }: AddRoomModalProps): JSX.Element | null {
+function AddRoomModal({ isOpen, onClose, onAddRoom, existingRooms }: AddRoomModalProps): JSX.Element {
   const [roomName, setRoomName] = useState('');
   const [floor, setFloor] = useState(1);
   const [studentsCount, setStudentsCount] = useState(80);
-
-  if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,68 +74,82 @@ function AddRoomModal({ isOpen, onClose, onAddRoom, existingRooms }: AddRoomModa
   };
 
   return (
-    <div className="modal-overlay" onClick={handleClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Add New Examination Room</h2>
-          <button className="close-button" onClick={handleClose}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-        </div>
+    <Dialog 
+      open={isOpen} 
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: { borderRadius: 0 }
+      }}
+    >
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 1 }}>
+        <Typography variant="h5" component="h2" sx={{ fontWeight: 600 }}>
+          Add New Examination Room
+        </Typography>
+        <IconButton onClick={handleClose} size="small">
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
 
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="form-group">
-            <label htmlFor="roomName">Room Name:</label>
-            <input
-              type="text"
-              id="roomName"
+      <Box component="form" onSubmit={handleSubmit}>
+        <DialogContent sx={{ pt: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <TextField
+              fullWidth
+              label="Room Name"
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
               placeholder="e.g., Room 109"
               required
+              variant="outlined"
             />
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="floor">Floor:</label>
-            <select
-              id="floor"
-              value={floor}
-              onChange={(e) => setFloor(parseInt(e.target.value))}
-            >
-              <option value={1}>Floor 1</option>
-              <option value={2}>Floor 2</option>
-              <option value={3}>Floor 3</option>
-              <option value={4}>Floor 4</option>
-            </select>
-          </div>
+            <FormControl fullWidth>
+              <InputLabel>Floor</InputLabel>
+              <Select
+                value={floor}
+                label="Floor"
+                onChange={(e) => setFloor(Number(e.target.value))}
+              >
+                <MenuItem value={1}>Floor 1</MenuItem>
+                <MenuItem value={2}>Floor 2</MenuItem>
+                <MenuItem value={3}>Floor 3</MenuItem>
+                <MenuItem value={4}>Floor 4</MenuItem>
+              </Select>
+            </FormControl>
 
-          <div className="form-group">
-            <label htmlFor="studentsCount">Student Capacity:</label>
-            <input
+            <TextField
+              fullWidth
               type="number"
-              id="studentsCount"
+              label="Student Capacity"
               value={studentsCount}
               onChange={(e) => setStudentsCount(parseInt(e.target.value))}
-              min="1"
-              max="200"
+              inputProps={{ min: 1, max: 200 }}
               required
+              variant="outlined"
             />
-          </div>
+          </Box>
+        </DialogContent>
 
-          <div className="modal-actions">
-            <button type="button" className="cancel-button" onClick={handleClose}>
-              Cancel
-            </button>
-            <button type="submit" className="submit-button">
-              Add Room
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <DialogActions sx={{ p: 3, pt: 2, gap: 1 }}>
+          <Button 
+            onClick={handleClose} 
+            variant="outlined"
+            sx={{ minWidth: 100 }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            type="submit" 
+            variant="contained"
+            sx={{ minWidth: 100, fontWeight: 600 }}
+          >
+            Add Room
+          </Button>
+        </DialogActions>
+      </Box>
+    </Dialog>
   );
 }
 

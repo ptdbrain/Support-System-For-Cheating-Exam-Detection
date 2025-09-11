@@ -1,67 +1,151 @@
+import { 
+  Card, 
+  CardContent, 
+  CardActions, 
+  Typography, 
+  Chip, 
+  Box, 
+  Button, 
+  Checkbox,
+  Avatar,
+  Divider
+} from '@mui/material';
+import { 
+  Groups as GroupsIcon, 
+  Videocam as VideocamIcon, 
+  Visibility as VisibilityIcon 
+} from '@mui/icons-material';
 import { RoomCardProps } from '../../types/index';
-import './RoomCard.css';
+import { statusColors } from '../../theme/theme';
 
 function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: RoomCardProps): JSX.Element {
+  const handleClick = (event: React.MouseEvent) => {
+    if (isDeleteMode) {
+      event.stopPropagation();
+    }
+    onClick();
+  };
+
+  // Extract numeric part from room name (e.g., "Room 101" -> "101")
+  const getRoomNumber = (roomName: string): string => {
+    const match = roomName.match(/\d+/);
+    return match ? match[0] : roomName;
+  };
+
   return (
-    <div className={`room-card ${isDeleteMode ? 'delete-mode' : ''} ${isSelected ? 'selected' : ''}`} onClick={onClick}>
+    <Card 
+      sx={{ 
+        height: '100%',
+        minHeight: 380,
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        border: isSelected ? '3px solid' : '2px solid',
+        borderColor: isSelected ? 'error.main' : 'grey.200',
+        position: 'relative',
+        '&:hover': {
+          transform: isDeleteMode ? 'none' : 'translateY(-4px)',
+          boxShadow: isDeleteMode ? 4 : 8,
+        }
+      }}
+      onClick={handleClick}
+    >
       {isDeleteMode && (
-        <div className="room-checkbox">
-          <input 
-            type="checkbox" 
+        <Box sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }}>
+          <Checkbox
             checked={isSelected}
             onChange={(e) => {
               e.stopPropagation();
               onClick();
             }}
             onClick={(e) => e.stopPropagation()}
+            sx={{ p: 0 }}
           />
-        </div>
+        </Box>
       )}
-      <div className="room-card-header">
-        <h3 className="room-name">{room.name}</h3>
-        <span className={`status-badge ${room.status}`}>
-          {room.status.toUpperCase()}
-        </span>
-      </div>
       
-      <div className="room-card-body">
-        <div className="room-stats">
-          <div className="stat-item">
-            <span className="stat-icon">👥</span>
-            <span className="stat-value">{room.studentsCount}</span>
-            <span className="stat-label">Slots</span>
-          </div>
-          
-          <div className="stat-item">
-            <span className="stat-icon">📹</span>
-            <span className="stat-value">{room.cameras.length}</span>
-            <span className="stat-label">Cameras</span>
-          </div>
-        </div>
+      <CardContent sx={{ pb: 1, p: 3 }}>
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" component="h3" sx={{ fontWeight: 600, fontSize: '1.5rem' }}>
+            {getRoomNumber(room.name)}
+          </Typography>
+        </Box>
         
-        <div className="camera-list">
-          <h4>Active Cameras:</h4>
-          <div className="cameras">
-            {room.cameras.map((camera, index) => (
-              <span key={camera.id} className="camera-tag">
-                {camera.name}
-                {index < room.cameras.length - 1 && ', '}
-              </span>
+        <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'primary.light', width: 48, height: 48 }}>
+              <GroupsIcon sx={{ fontSize: 24 }} />
+            </Avatar>
+            <Box>
+              <Typography variant="h4" component="span" sx={{ fontWeight: 600, fontSize: '2rem' }}>
+                {room.studentsCount}
+              </Typography>
+              <Typography variant="body1" display="block" color="text.secondary" sx={{ fontSize: '1rem' }}>
+                Slots
+              </Typography>
+            </Box>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'secondary.light', width: 48, height: 48 }}>
+              <VideocamIcon sx={{ fontSize: 24 }} />
+            </Avatar>
+            <Box>
+              <Typography variant="h4" component="span" sx={{ fontWeight: 600, fontSize: '2rem' }}>
+                {room.cameras.length}
+              </Typography>
+              <Typography variant="body1" display="block" color="text.secondary" sx={{ fontSize: '1rem' }}>
+                Cameras
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        
+        <Divider sx={{ my: 3 }} />
+        
+        <Box>
+          <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600, fontSize: '1.1rem' }}>
+            Active Cameras:
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {room.cameras.map((camera) => (
+              <Chip
+                key={camera.id}
+                label={camera.name}
+                size="medium"
+                variant="outlined"
+                sx={{ fontSize: '0.875rem', fontWeight: 500 }}
+              />
             ))}
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </CardContent>
       
-      <div className="room-card-footer">
-        <button className="monitor-button">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 2C4.5 2 1.73 4.11 1 7.5C1.73 10.89 4.5 13 8 13C11.5 13 14.27 10.89 15 7.5C14.27 4.11 11.5 2 8 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+      <CardActions sx={{ p: 3, pt: 0 }}>
+        <Button
+          variant="contained"
+          startIcon={<VisibilityIcon />}
+          fullWidth
+          size="large"
+          sx={{ 
+            fontWeight: 600, 
+            fontSize: '1rem',
+            py: 1.5,
+            '&:hover': {
+              transform: 'scale(1.02)',
+              transition: 'all 0.2s ease'
+            }
+          }}
+          onClick={(e) => {
+            if (!isDeleteMode) {
+              e.stopPropagation();
+              onClick();
+            }
+          }}
+        >
           Monitor Room
-        </button>
-      </div>
-    </div>
+        </Button>
+      </CardActions>
+    </Card>
   );
 }
 
