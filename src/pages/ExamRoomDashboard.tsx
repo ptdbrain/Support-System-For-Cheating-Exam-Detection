@@ -74,8 +74,14 @@ function ExamRoomDashboard(): JSX.Element {
   };
 
   return (
-    <Container maxWidth="xl">
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+    <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 }, px: { xs: 2, sm: 3, md: 4 } }}>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'flex-start', 
+        gap: { xs: 1, sm: 2 }, 
+        mb: { xs: 2, sm: 3 }, 
+        flexWrap: 'wrap' 
+      }}>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -86,7 +92,10 @@ function ExamRoomDashboard(): JSX.Element {
             '&:hover': {
               backgroundColor: '#5a9fd4',
             },
-            fontWeight: 600
+            fontWeight: 600,
+            fontSize: { xs: '0.8rem', sm: '0.875rem' },
+            py: { xs: 1, sm: 1.5 },
+            px: { xs: 1.5, sm: 2 }
           }}
         >
           Add Rooms
@@ -101,7 +110,10 @@ function ExamRoomDashboard(): JSX.Element {
             '&:hover': {
               backgroundColor: '#dc2626',
             },
-            fontWeight: 600
+            fontWeight: 600,
+            fontSize: { xs: '0.8rem', sm: '0.875rem' },
+            py: { xs: 1, sm: 1.5 },
+            px: { xs: 1.5, sm: 2 }
           }}
         >
           {isDeleteMode ? 'Cancel' : 'Delete'}
@@ -117,7 +129,10 @@ function ExamRoomDashboard(): JSX.Element {
               '&:hover': {
                 backgroundColor: '#dc2626',
               },
-              fontWeight: 600 
+              fontWeight: 600,
+              fontSize: { xs: '0.8rem', sm: '0.875rem' },
+              py: { xs: 1, sm: 1.5 },
+              px: { xs: 1.5, sm: 2 }
             }}
           >
             Delete {selectedRooms.length} Room(s)
@@ -127,15 +142,17 @@ function ExamRoomDashboard(): JSX.Element {
       
       {examRooms.length > 0 ? (
         <Box>
-          <Grid container spacing={4}>
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center">
             {currentRooms.map((room) => (
-              <Grid item xs={12} sm={6} md={6} lg={4} key={room.id}>
-                <RoomCard
-                  room={room}
-                  onClick={() => handleRoomClick(room.id)}
-                  isDeleteMode={isDeleteMode}
-                  isSelected={selectedRooms.includes(room.id)}
-                />
+              <Grid item xs={12} sm={6} md={6} lg={3} xl={3} key={room.id}>
+                <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center' }}>
+                  <RoomCard
+                    room={room}
+                    onClick={() => handleRoomClick(room.id)}
+                    isDeleteMode={isDeleteMode}
+                    isSelected={selectedRooms.includes(room.id)}
+                  />
+                </Box>
               </Grid>
             ))}
           </Grid>

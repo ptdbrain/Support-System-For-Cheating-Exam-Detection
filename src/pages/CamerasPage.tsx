@@ -124,8 +124,14 @@ function CamerasPage(): JSX.Element {
   };
 
   return (
-    <Container maxWidth="xl">
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+    <Container maxWidth="xl" sx={{ py: { xs: 2, sm: 3, md: 4 }, px: { xs: 2, sm: 3, md: 4 } }}>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'flex-start', 
+        gap: { xs: 1, sm: 2 }, 
+        mb: { xs: 2, sm: 3 }, 
+        flexWrap: 'wrap' 
+      }}>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -136,7 +142,10 @@ function CamerasPage(): JSX.Element {
             '&:hover': {
               backgroundColor: '#5a9fd4',
             },
-            fontWeight: 600
+            fontWeight: 600,
+            fontSize: { xs: '0.8rem', sm: '0.875rem' },
+            py: { xs: 1, sm: 1.5 },
+            px: { xs: 1.5, sm: 2 }
           }}
         >
           Add Camera
@@ -151,7 +160,10 @@ function CamerasPage(): JSX.Element {
             '&:hover': {
               backgroundColor: '#dc2626',
             },
-            fontWeight: 600
+            fontWeight: 600,
+            fontSize: { xs: '0.8rem', sm: '0.875rem' },
+            py: { xs: 1, sm: 1.5 },
+            px: { xs: 1.5, sm: 2 }
           }}
         >
           {isDeleteMode ? 'Cancel' : 'Delete'}
@@ -167,7 +179,10 @@ function CamerasPage(): JSX.Element {
               '&:hover': {
                 backgroundColor: '#dc2626',
               },
-              fontWeight: 600 
+              fontWeight: 600,
+              fontSize: { xs: '0.8rem', sm: '0.875rem' },
+              py: { xs: 1, sm: 1.5 },
+              px: { xs: 1.5, sm: 2 }
             }}
           >
             Delete {selectedCameras.length} Camera(s)
@@ -177,7 +192,7 @@ function CamerasPage(): JSX.Element {
       
       {allCameras.length > 0 ? (
         <Box>
-          <Grid container spacing={4} justifyContent="center">
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center">
             {currentCameras.map((camera) => (
               <Grid item xs={12} sm={6} md={6} lg={3} xl={3} key={camera.id}>
                 <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center' }}>
