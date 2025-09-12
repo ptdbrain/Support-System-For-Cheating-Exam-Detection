@@ -44,8 +44,8 @@ src/
 │   ├── ExamRoomDashboard.js & .css   # Main dashboard page
 │   ├── RoomMonitoring.js & .css      # Room monitoring page
 │   └── LiveProctoring.js & .css      # Live proctoring page
-├── context/
-│   └── ProctoringContext.js          # Global state management
+├── data/
+│   └── mockData.ts                   # Mock data for development
 ├── styles/
 │   ├── index.css                     # Global styles
 │   └── App.css                       # App-level styles

@@ -1,10 +1,48 @@
-// Common types for the proctoring system
+// Common types for the proctoring system - matches database structure
 
+// Database entity types
 export interface Camera {
-  id: string;
+  id: number;
   name: string;
+  status: 'Online' | 'Offline' | 'Recording' | 'Error';
+  streamUrl?: string;
+  note?: string;
 }
 
+export interface Room {
+  id: number;
+  name: string;
+  note?: string;
+}
+
+export interface RoomCamera {
+  roomId: number;
+  cameraId: number;
+}
+
+export interface Incident {
+  id: number;
+  roomId?: number;
+  incidentTime: Date;
+  description?: string;
+  evidenceUrl?: string;
+  status: 'Detected' | 'Verified' | 'Dismissed';
+}
+
+// Extended types with relationships
+export interface RoomWithCameras extends Room {
+  cameras: Camera[];
+}
+
+export interface CameraWithRooms extends Camera {
+  rooms: Room[];
+}
+
+export interface IncidentWithRoom extends Incident {
+  room?: Room;
+}
+
+// Legacy types for backward compatibility
 export interface ExamRoom {
   id: string;
   name: string;
@@ -14,36 +52,9 @@ export interface ExamRoom {
   cameras: Camera[];
 }
 
-export interface BehaviorEvent {
-  id: number;
-  type: 'suspicious' | 'recording';
-  timestamp: string;
-  description: string;
-}
-
-export interface StudentBehavior {
-  count: number;
-  events: BehaviorEvent[];
-}
-
-export interface Student {
-  id: string;
-  name: string;
-}
 
 export type AlertLevel = 'none' | 'orange' | 'red';
 
-export interface ProctoringContextType {
-  examRooms: ExamRoom[];
-  studentBehaviors: Record<string, StudentBehavior>;
-  logSuspiciousBehavior: (studentId: string, description?: string) => void;
-  recordBehavior: (studentId: string) => void;
-  getAlertLevel: (studentId: string) => AlertLevel;
-  addRoom: (room: ExamRoom) => void;
-  deleteRooms: (roomIds: string[]) => void;
-  addCamera: (roomId: string, camera: Camera) => void;
-  deleteCameras: (roomId: string, cameraIds: string[]) => void;
-}
 
 // Component prop types
 export interface RoomCardProps {
@@ -64,7 +75,7 @@ export interface CameraPreviewProps {
 export interface AlertBannerProps {
   level: AlertLevel;
   count: number;
-  studentName: string;
+  incidentDescription?: string;
 }
 
 export interface BackButtonProps {
@@ -78,8 +89,7 @@ export interface VideoStreamProps {
 }
 
 export interface ProctoringPanelProps {
-  student: Student;
-  behaviorData: StudentBehavior;
+  incident?: Incident;
   alertLevel: AlertLevel;
   isRecording: boolean;
   onNotifySuspicious: () => void;

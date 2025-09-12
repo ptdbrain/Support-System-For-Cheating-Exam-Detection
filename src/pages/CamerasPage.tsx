@@ -16,7 +16,8 @@ import {
   Delete as DeleteIcon, 
   Check as CheckIcon 
 } from '@mui/icons-material';
-import { useProctoring } from '../context/ProctoringContext';
+import { ExamRoom, Camera } from '../types/index';
+import { mockExamRooms } from '../data/mockData';
 import CameraCard from '../components/dashboard/CameraCard';
 import AddCameraWithRoomModal from '../components/common/AddCameraWithRoomModal';
 
@@ -29,7 +30,7 @@ interface ExtendedCamera {
 }
 
 function CamerasPage(): JSX.Element {
-  const { examRooms, addCamera } = useProctoring();
+  const [examRooms, setExamRooms] = useState<ExamRoom[]>(mockExamRooms);
   const navigate = useNavigate();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
@@ -265,7 +266,13 @@ function CamerasPage(): JSX.Element {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onAddCamera={(roomId, camera) => {
-          addCamera(roomId, camera);
+          setExamRooms(prevRooms => 
+            prevRooms.map(room =>
+              room.id === roomId
+                ? { ...room, cameras: [...room.cameras, camera] }
+                : room
+            )
+          );
           setIsAddModalOpen(false);
         }}
         examRooms={examRooms}

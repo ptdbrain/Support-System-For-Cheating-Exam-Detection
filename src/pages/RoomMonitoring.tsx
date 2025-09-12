@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Fade } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon, Check as CheckIcon } from '@mui/icons-material';
-import { useProctoring } from '../context/ProctoringContext';
+import { ExamRoom, Camera } from '../types/index';
+import { mockExamRooms } from '../data/mockData';
 import CameraPreview from '../components/monitoring/CameraPreview';
 import BackButton from '../components/common/BackButton';
 import AddCameraModal from '../components/common/AddCameraModal';
@@ -11,7 +12,7 @@ import './RoomMonitoring.css';
 function RoomMonitoring(): JSX.Element {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const { examRooms, addCamera, deleteCameras } = useProctoring();
+  const [examRooms, setExamRooms] = useState<ExamRoom[]>(mockExamRooms);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedCameras, setSelectedCameras] = useState<string[]>([]);
@@ -47,10 +48,28 @@ function RoomMonitoring(): JSX.Element {
   const handleDeleteCameras = (): void => {
     if (selectedCameras.length > 0 && roomId) {
       if (confirm(`Are you sure you want to delete ${selectedCameras.length} camera(s)?`)) {
-        deleteCameras(roomId, selectedCameras);
+        setExamRooms(prevRooms => 
+          prevRooms.map(room =>
+            room.id === roomId
+              ? { ...room, cameras: room.cameras.filter(camera => !selectedCameras.includes(camera.id)) }
+              : room
+          )
+        );
         setSelectedCameras([]);
         setIsDeleteMode(false);
       }
+    }
+  };
+
+  const addCamera = (camera: Camera): void => {
+    if (roomId) {
+      setExamRooms(prevRooms => 
+        prevRooms.map(room =>
+          room.id === roomId
+            ? { ...room, cameras: [...room.cameras, camera] }
+            : room
+        )
+      );
     }
   };
 
@@ -144,7 +163,7 @@ function RoomMonitoring(): JSX.Element {
       <AddCameraModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onAddCamera={(camera) => roomId && addCamera(roomId, camera)}
+        onAddCamera={addCamera}
         existingCameras={room.cameras}
         roomName={room.name}
       />

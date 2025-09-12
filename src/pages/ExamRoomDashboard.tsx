@@ -16,13 +16,14 @@ import {
   Delete as DeleteIcon, 
   Check as CheckIcon 
 } from '@mui/icons-material';
-import { useProctoring } from '../context/ProctoringContext';
+import { ExamRoom } from '../types/index';
+import { mockExamRooms } from '../data/mockData';
 import RoomCard from '../components/dashboard/RoomCard';
 import AddRoomModal from '../components/common/AddRoomModal';
 
 function ExamRoomDashboard(): JSX.Element {
   const navigate = useNavigate();
-  const { examRooms, addRoom, deleteRooms } = useProctoring();
+  const [examRooms, setExamRooms] = useState<ExamRoom[]>(mockExamRooms);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState<string[]>([]);
@@ -55,11 +56,15 @@ function ExamRoomDashboard(): JSX.Element {
   const handleDeleteRooms = (): void => {
     if (selectedRooms.length > 0) {
       if (confirm(`Are you sure you want to delete ${selectedRooms.length} room(s)?`)) {
-        deleteRooms(selectedRooms);
+        setExamRooms(prevRooms => prevRooms.filter(room => !selectedRooms.includes(room.id)));
         setSelectedRooms([]);
         setIsDeleteMode(false);
       }
     }
+  };
+
+  const addRoom = (room: ExamRoom): void => {
+    setExamRooms(prevRooms => [...prevRooms, room]);
   };
 
   const handleToggleDeleteMode = (): void => {

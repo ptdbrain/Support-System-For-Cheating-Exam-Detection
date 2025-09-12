@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProctoring } from '../context/ProctoringContext';
+import { ExamRoom } from '../types/index';
+import { mockExamRooms } from '../data/mockData';
 import VideoStream from '../components/proctoring/VideoStream';
 import ProctoringPanel from '../components/proctoring/ProctoringPanel';
 import BackButton from '../components/common/BackButton';
@@ -10,7 +11,7 @@ import './LiveProctoring.css';
 function LiveProctoring(): JSX.Element {
   const { roomId, cameraId } = useParams();
   const navigate = useNavigate();
-  const { examRooms, getAlertLevel, logSuspiciousBehavior, recordBehavior, studentBehaviors } = useProctoring();
+  const [examRooms] = useState<ExamRoom[]>(mockExamRooms);
   const [isRecording, setIsRecording] = useState(false);
   
   const room = examRooms.find(r => r.id === roomId);

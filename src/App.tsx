@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, Box } from '@mui/material';
-import { ProctoringProvider } from './context/ProctoringContext';
 import { theme } from './theme/theme';
 import ExamRoomDashboard from './pages/ExamRoomDashboard';
 import CamerasPage from './pages/CamerasPage';
@@ -13,36 +12,34 @@ function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ProctoringProvider>
-        <Router>
+      <Router>
+        <Box 
+          sx={{ 
+            display: 'flex',
+            minHeight: '100vh',
+            backgroundColor: 'background.default'
+          }}
+        >
+          <Sidebar />
           <Box 
+            component="main" 
             sx={{ 
-              display: 'flex',
-              minHeight: '100vh',
-              backgroundColor: 'background.default'
+              flex: 1, 
+              py: 3,
+              px: { xs: 2, sm: 3, md: 4 },
+              overflow: 'auto'
             }}
           >
-            <Sidebar />
-            <Box 
-              component="main" 
-              sx={{ 
-                flex: 1, 
-                py: 3,
-                px: { xs: 2, sm: 3, md: 4 },
-                overflow: 'auto'
-              }}
-            >
-              <Routes>
-                <Route path="/" element={<ExamRoomDashboard />} />
-                <Route path="/cameras" element={<CamerasPage />} />
-                <Route path="/settings" element={<div>Settings Page (Coming Soon)</div>} />
-                <Route path="/room/:roomId" element={<RoomMonitoring />} />
-                <Route path="/room/:roomId/camera/:cameraId" element={<LiveProctoring />} />
-              </Routes>
-            </Box>
+            <Routes>
+              <Route path="/" element={<ExamRoomDashboard />} />
+              <Route path="/cameras" element={<CamerasPage />} />
+              <Route path="/settings" element={<div>Settings Page (Coming Soon)</div>} />
+              <Route path="/room/:roomId" element={<RoomMonitoring />} />
+              <Route path="/room/:roomId/camera/:cameraId" element={<LiveProctoring />} />
+            </Routes>
           </Box>
-        </Router>
-      </ProctoringProvider>
+        </Box>
+      </Router>
     </ThemeProvider>
   );
 }
