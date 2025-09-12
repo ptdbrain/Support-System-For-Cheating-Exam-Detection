@@ -82,7 +82,8 @@ export const mockRooms: Room[] = [
   },
   {
     id: 5,
-    name: 'Room 202'
+    name: 'Room 202',
+    note: 'Second upper floor examination room'
   }
 ];
 
@@ -117,7 +118,7 @@ export const mockRoomCameras: RoomCamera[] = [
     cameraId: 7
   },
   {
-    roomId: 4,
+    roomId: 5,
     cameraId: 8
   }
 ];
