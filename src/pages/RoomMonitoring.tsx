@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Fade } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon, Check as CheckIcon } from '@mui/icons-material';
-import { ExamRoom, Camera } from '../types/index';
-import { mockExamRooms } from '../data/mockData';
+import { RoomWithCameras, Camera } from '../types/index';
+import { getRoomsWithCameras } from '../data/mockData';
 import CameraPreview from '../components/monitoring/CameraPreview';
 import BackButton from '../components/common/BackButton';
 import AddCameraModal from '../components/common/AddCameraModal';
@@ -12,12 +12,12 @@ import './RoomMonitoring.css';
 function RoomMonitoring(): JSX.Element {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const [examRooms, setExamRooms] = useState<ExamRoom[]>(mockExamRooms);
+  const [rooms, setRooms] = useState<RoomWithCameras[]>(getRoomsWithCameras());
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
-  const [selectedCameras, setSelectedCameras] = useState<string[]>([]);
+  const [selectedCameras, setSelectedCameras] = useState<number[]>([]);
   
-  const room = examRooms.find(r => r.id === roomId);
+  const room = rooms.find(r => r.id === parseInt(roomId || '0'));
   
   if (!room) {
     return (
@@ -29,7 +29,7 @@ function RoomMonitoring(): JSX.Element {
     );
   }
 
-  const handleCameraClick = (cameraId: string): void => {
+  const handleCameraClick = (cameraId: number): void => {
     if (isDeleteMode) {
       setSelectedCameras(prev => 
         prev.includes(cameraId) 
@@ -47,10 +47,11 @@ function RoomMonitoring(): JSX.Element {
 
   const handleDeleteCameras = (): void => {
     if (selectedCameras.length > 0 && roomId) {
+      const roomIdNum = parseInt(roomId);
       if (confirm(`Are you sure you want to delete ${selectedCameras.length} camera(s)?`)) {
-        setExamRooms(prevRooms => 
+        setRooms(prevRooms => 
           prevRooms.map(room =>
-            room.id === roomId
+            room.id === roomIdNum
               ? { ...room, cameras: room.cameras.filter(camera => !selectedCameras.includes(camera.id)) }
               : room
           )
@@ -63,9 +64,10 @@ function RoomMonitoring(): JSX.Element {
 
   const addCamera = (camera: Camera): void => {
     if (roomId) {
-      setExamRooms(prevRooms => 
+      const roomIdNum = parseInt(roomId);
+      setRooms(prevRooms => 
         prevRooms.map(room =>
-          room.id === roomId
+          room.id === roomIdNum
             ? { ...room, cameras: [...room.cameras, camera] }
             : room
         )
@@ -86,12 +88,13 @@ function RoomMonitoring(): JSX.Element {
           <h1>{room.name}</h1>
           <div className="room-stats">
             <span className="stat">
-              <strong>Slots:</strong> {room.studentsCount}
+              <strong>Cameras:</strong> {room.cameras.length}
             </span>
-            <span className="stat">
-              <strong>Status:</strong> 
-              <span className={`status ${room.status}`}>{room.status.toUpperCase()}</span>
-            </span>
+            {room.note && (
+              <span className="stat">
+                <strong>Note:</strong> {room.note}
+              </span>
+            )}
           </div>
         </div>
       </div>

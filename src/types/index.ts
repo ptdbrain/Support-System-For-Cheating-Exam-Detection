@@ -58,7 +58,7 @@ export type AlertLevel = 'none' | 'orange' | 'red';
 
 // Component prop types
 export interface RoomCardProps {
-  room: ExamRoom;
+  room: RoomWithCameras;
   onClick: () => void;
   isDeleteMode?: boolean;
   isSelected?: boolean;

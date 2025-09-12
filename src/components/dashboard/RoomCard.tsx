@@ -11,7 +11,6 @@ import {
   Divider
 } from '@mui/material';
 import { 
-  Groups as GroupsIcon, 
   Videocam as VideocamIcon, 
   Visibility as VisibilityIcon 
 } from '@mui/icons-material';
@@ -73,21 +72,7 @@ function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: R
           </Typography>
         </Box>
         
-        <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar sx={{ bgcolor: 'primary.light', width: 48, height: 48 }}>
-              <GroupsIcon sx={{ fontSize: 24 }} />
-            </Avatar>
-            <Box>
-              <Typography variant="h4" component="span" sx={{ fontWeight: 600, fontSize: '2rem' }}>
-                {room.studentsCount}
-              </Typography>
-              <Typography variant="body1" display="block" color="text.secondary" sx={{ fontSize: '1rem' }}>
-                Slots
-              </Typography>
-            </Box>
-          </Box>
-          
+        <Box sx={{ display: 'flex', gap: 4, mb: 3, justifyContent: 'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Avatar sx={{ bgcolor: 'secondary.light', width: 48, height: 48 }}>
               <VideocamIcon sx={{ fontSize: 24 }} />
@@ -102,6 +87,14 @@ function RoomCard({ room, onClick, isDeleteMode = false, isSelected = false }: R
             </Box>
           </Box>
         </Box>
+        
+        {room.note && (
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+              {room.note}
+            </Typography>
+          </Box>
+        )}
         
         <Divider sx={{ my: 3 }} />
         

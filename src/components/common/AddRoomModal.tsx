@@ -6,28 +6,23 @@ import {
   DialogActions, 
   TextField, 
   Button, 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem, 
   IconButton,
   Box,
   Typography
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { ExamRoom } from '../../types/index';
+import { RoomWithCameras } from '../../types/index';
 
 interface AddRoomModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddRoom: (room: ExamRoom) => void;
-  existingRooms: ExamRoom[];
+  onAddRoom: (room: RoomWithCameras) => void;
+  existingRooms: RoomWithCameras[];
 }
 
 function AddRoomModal({ isOpen, onClose, onAddRoom, existingRooms }: AddRoomModalProps): JSX.Element {
   const [roomName, setRoomName] = useState('');
-  const [floor, setFloor] = useState(1);
-  const [studentsCount, setStudentsCount] = useState(80);
+  const [note, setNote] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,22 +33,14 @@ function AddRoomModal({ isOpen, onClose, onAddRoom, existingRooms }: AddRoomModa
     }
 
     // Generate unique room ID
-    const maxRoomNumber = existingRooms
-      .filter(room => room.floor === floor)
-      .reduce((max, room) => {
-        const roomNumber = parseInt(room.name.split(' ')[1] || '0');
-        return roomNumber > max ? roomNumber : max;
-      }, floor * 100);
+    const maxId = existingRooms.reduce((max, room) => 
+      room.id > max ? room.id : max, 0
+    );
 
-    const newRoomNumber = maxRoomNumber + 1;
-    const roomId = `room-${newRoomNumber}`;
-
-    const newRoom: ExamRoom = {
-      id: roomId,
+    const newRoom: RoomWithCameras = {
+      id: maxId + 1,
       name: roomName,
-      status: 'active',
-      studentsCount,
-      floor,
+      note: note || undefined,
       cameras: []
     };
 
@@ -61,15 +48,13 @@ function AddRoomModal({ isOpen, onClose, onAddRoom, existingRooms }: AddRoomModa
     
     // Reset form
     setRoomName('');
-    setFloor(1);
-    setStudentsCount(80);
+    setNote('');
     onClose();
   };
 
   const handleClose = () => {
     setRoomName('');
-    setFloor(1);
-    setStudentsCount(80);
+    setNote('');
     onClose();
   };
 
@@ -105,29 +90,15 @@ function AddRoomModal({ isOpen, onClose, onAddRoom, existingRooms }: AddRoomModa
               variant="outlined"
             />
 
-            <FormControl fullWidth>
-              <InputLabel>Floor</InputLabel>
-              <Select
-                value={floor}
-                label="Floor"
-                onChange={(e) => setFloor(Number(e.target.value))}
-              >
-                <MenuItem value={1}>Floor 1</MenuItem>
-                <MenuItem value={2}>Floor 2</MenuItem>
-                <MenuItem value={3}>Floor 3</MenuItem>
-                <MenuItem value={4}>Floor 4</MenuItem>
-              </Select>
-            </FormControl>
-
             <TextField
               fullWidth
-              type="number"
-              label="Student Capacity"
-              value={studentsCount}
-              onChange={(e) => setStudentsCount(parseInt(e.target.value))}
-              inputProps={{ min: 1, max: 200 }}
-              required
+              label="Note"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Optional notes about this room"
               variant="outlined"
+              multiline
+              rows={3}
             />
           </Box>
         </DialogContent>

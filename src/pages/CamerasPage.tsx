@@ -5,48 +5,63 @@ import {
   Typography, 
   Box, 
   Button, 
-  Grid, 
   Paper,
-  Chip,
   Fade,
-  Pagination
+  Pagination,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Avatar,
+  Checkbox,
+  Divider,
+  Chip
 } from '@mui/material';
 import { 
   Add as AddIcon, 
   Delete as DeleteIcon, 
-  Check as CheckIcon 
+  Check as CheckIcon,
+  Videocam as VideocamIcon,
+  ChevronRight as ChevronRightIcon,
+  Circle as CircleIcon
 } from '@mui/icons-material';
-import { ExamRoom, Camera } from '../types/index';
-import { mockExamRooms } from '../data/mockData';
-import CameraCard from '../components/dashboard/CameraCard';
+import { RoomWithCameras } from '../types/index';
+import { getRoomsWithCameras } from '../data/mockData';
 import AddCameraWithRoomModal from '../components/common/AddCameraWithRoomModal';
 
 interface ExtendedCamera {
-  id: string;
+  id: number;
   name: string;
-  roomId: string;
+  roomId: number;
   roomName: string;
   displayName: string;
+  status: 'Online' | 'Offline' | 'Recording' | 'Error';
+  streamUrl?: string;
+  note?: string;
 }
 
 function CamerasPage(): JSX.Element {
-  const [examRooms, setExamRooms] = useState<ExamRoom[]>(mockExamRooms);
+  const [rooms, setRooms] = useState<RoomWithCameras[]>(getRoomsWithCameras());
   const navigate = useNavigate();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
-  const [selectedCameras, setSelectedCameras] = useState<string[]>([]);
+  const [selectedCameras, setSelectedCameras] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   
   const camerasPerPage = 8;
   
   // Flatten all cameras from all rooms with room context
-  const allCameras: ExtendedCamera[] = examRooms.flatMap(room => 
+  const allCameras: ExtendedCamera[] = rooms.flatMap(room => 
     room.cameras.map(camera => ({
-      id: `${room.id}-${camera.id}`,
+      id: camera.id,
       name: camera.name,
       roomId: room.id,
       roomName: room.name,
-      displayName: `${room.name} - ${camera.name}`
+      displayName: `${room.name} - ${camera.name}`,
+      status: camera.status,
+      streamUrl: camera.streamUrl,
+      note: camera.note
     }))
   );
   
@@ -65,44 +80,21 @@ function CamerasPage(): JSX.Element {
           : [...prev, camera.id]
       );
     } else {
-      // Get the actual camera ID from the original camera data
-      const originalCamera = examRooms
-        .find(r => r.id === camera.roomId)
-        ?.cameras.find(c => c.name === camera.name);
-      
-      if (originalCamera) {
-        navigate(`/room/${camera.roomId}/camera/${originalCamera.id}`);
-      }
+      navigate(`/room/${camera.roomId}/camera/${camera.id}`);
     }
   };
 
   const handleDeleteCameras = (): void => {
     if (selectedCameras.length > 0) {
       if (confirm(`Are you sure you want to delete ${selectedCameras.length} camera(s)?`)) {
-        // Group deletions by room
-        const camerasToDelete = selectedCameras.map(cameraId => {
-          const camera = allCameras.find(c => c.id === cameraId);
-          return camera;
-        }).filter(Boolean) as ExtendedCamera[];
+        // Update rooms by removing selected cameras
+        setRooms(prevRooms => 
+          prevRooms.map(room => ({
+            ...room,
+            cameras: room.cameras.filter(camera => !selectedCameras.includes(camera.id))
+          }))
+        );
         
-        const groupedByRoom = camerasToDelete.reduce((acc, camera) => {
-          if (!acc[camera.roomId]) {
-            acc[camera.roomId] = [];
-          }
-          // Get the actual camera ID from the original camera data
-          const originalCamera = examRooms
-            .find(r => r.id === camera.roomId)
-            ?.cameras.find(c => c.name === camera.name);
-          
-          if (originalCamera) {
-            acc[camera.roomId].push(originalCamera.id);
-          }
-          return acc;
-        }, {} as Record<string, string[]>);
-
-        // Note: We would need to implement batch delete functionality in context
-        // For now, just reset the selection
-        console.log('Would delete cameras:', groupedByRoom);
         setSelectedCameras([]);
         setIsDeleteMode(false);
       }
@@ -114,7 +106,7 @@ function CamerasPage(): JSX.Element {
     setSelectedCameras([]);
   };
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number): void => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number): void => {
     setCurrentPage(page);
     // Clear selections when changing pages
     setSelectedCameras([]);
@@ -193,20 +185,78 @@ function CamerasPage(): JSX.Element {
       
       {allCameras.length > 0 ? (
         <Box>
-          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center">
-            {currentCameras.map((camera) => (
-              <Grid item xs={12} sm={6} md={6} lg={3} xl={3} key={camera.id}>
-                <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center' }}>
-                  <CameraCard
-                    camera={camera}
-                    onClick={() => handleCameraClick(camera)}
-                    isDeleteMode={isDeleteMode}
-                    isSelected={selectedCameras.includes(camera.id)}
-                  />
+          <Paper sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            <List>
+              {currentCameras.map((camera, index) => (
+                <Box key={camera.id}>
+                  <ListItem
+                    disablePadding
+                    secondaryAction={
+                      isDeleteMode ? (
+                        <Checkbox
+                          edge="end"
+                          checked={selectedCameras.includes(camera.id)}
+                          onChange={() => handleCameraClick(camera)}
+                        />
+                      ) : (
+                        <ChevronRightIcon color="action" />
+                      )
+                    }
+                  >
+                    <ListItemButton
+                      onClick={() => handleCameraClick(camera)}
+                      selected={selectedCameras.includes(camera.id) && isDeleteMode}
+                      sx={{ py: 2 }}
+                    >
+                      <ListItemIcon>
+                        <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                          <VideocamIcon />
+                        </Avatar>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                              {camera.name}
+                            </Typography>
+                            <Chip
+                              icon={<CircleIcon />}
+                              label={camera.status}
+                              size="small"
+                              color={
+                                camera.status === 'Online' ? 'success' :
+                                camera.status === 'Recording' ? 'primary' :
+                                camera.status === 'Error' ? 'error' : 'default'
+                              }
+                              variant="outlined"
+                            />
+                          </Box>
+                        }
+                        secondary={
+                          <Box sx={{ mt: 1 }}>
+                            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                              <strong>Room:</strong> {camera.roomName}
+                            </Typography>
+                            {camera.streamUrl && (
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                                <strong>Stream:</strong> {camera.streamUrl}
+                              </Typography>
+                            )}
+                            {camera.note && (
+                              <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                                {camera.note}
+                              </Typography>
+                            )}
+                          </Box>
+                        }
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  {index < currentCameras.length - 1 && <Divider />}
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
+              ))}
+            </List>
+          </Paper>
           
           {totalPages > 1 && (
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 3 }}>
@@ -266,7 +316,7 @@ function CamerasPage(): JSX.Element {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onAddCamera={(roomId, camera) => {
-          setExamRooms(prevRooms => 
+          setRooms(prevRooms => 
             prevRooms.map(room =>
               room.id === roomId
                 ? { ...room, cameras: [...room.cameras, camera] }
@@ -275,7 +325,7 @@ function CamerasPage(): JSX.Element {
           );
           setIsAddModalOpen(false);
         }}
-        examRooms={examRooms}
+        rooms={rooms}
       />
     </Container>
   );

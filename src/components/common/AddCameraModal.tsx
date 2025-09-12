@@ -12,6 +12,7 @@ interface AddCameraModalProps {
 
 function AddCameraModal({ isOpen, onClose, onAddCamera, existingCameras, roomName }: AddCameraModalProps): JSX.Element | null {
   const [cameraName, setCameraName] = useState('');
+  const [note, setNote] = useState('');
 
   if (!isOpen) return null;
 
@@ -24,28 +25,28 @@ function AddCameraModal({ isOpen, onClose, onAddCamera, existingCameras, roomNam
     }
 
     // Generate unique camera ID
-    const maxCamNumber = existingCameras.reduce((max, camera) => {
-      const camNumber = parseInt(camera.name.split(' ')[1] || '0');
-      return camNumber > max ? camNumber : max;
-    }, 0);
-
-    const newCamNumber = maxCamNumber + 1;
-    const cameraId = `cam${newCamNumber}`;
+    const maxCameraId = existingCameras.reduce((max, camera) => 
+      camera.id > max ? camera.id : max, 0
+    );
 
     const newCamera: Camera = {
-      id: cameraId,
-      name: cameraName
+      id: maxCameraId + 1,
+      name: cameraName,
+      status: 'Offline',
+      note: note || undefined
     };
 
     onAddCamera(newCamera);
     
     // Reset form
     setCameraName('');
+    setNote('');
     onClose();
   };
 
   const handleClose = () => {
     setCameraName('');
+    setNote('');
     onClose();
   };
 
@@ -71,6 +72,17 @@ function AddCameraModal({ isOpen, onClose, onAddCamera, existingCameras, roomNam
               onChange={(e) => setCameraName(e.target.value)}
               placeholder="e.g., CAM 3"
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="cameraNote">Note (optional):</label>
+            <textarea
+              id="cameraNote"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Optional notes about this camera"
+              rows={3}
             />
           </div>
 

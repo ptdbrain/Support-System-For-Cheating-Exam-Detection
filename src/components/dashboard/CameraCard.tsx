@@ -17,11 +17,14 @@ import {
 } from '@mui/icons-material';
 
 interface ExtendedCamera {
-  id: string;
+  id: number;
   name: string;
-  roomId: string;
+  roomId: number;
   roomName: string;
   displayName: string;
+  status: 'Online' | 'Offline' | 'Recording' | 'Error';
+  streamUrl?: string;
+  note?: string;
 }
 
 interface CameraCardProps {

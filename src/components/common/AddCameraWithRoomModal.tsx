@@ -15,23 +15,24 @@ import {
   Typography
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { Camera, ExamRoom } from '../../types/index';
+import { Camera, RoomWithCameras } from '../../types/index';
 
 interface AddCameraWithRoomModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddCamera: (roomId: string, camera: Camera) => void;
-  examRooms: ExamRoom[];
+  onAddCamera: (roomId: number, camera: Camera) => void;
+  rooms: RoomWithCameras[];
 }
 
 function AddCameraWithRoomModal({ 
   isOpen, 
   onClose, 
   onAddCamera, 
-  examRooms 
+  rooms 
 }: AddCameraWithRoomModalProps): JSX.Element {
   const [cameraName, setCameraName] = useState('');
-  const [selectedRoomId, setSelectedRoomId] = useState('');
+  const [selectedRoomId, setSelectedRoomId] = useState<number | ''>('');
+  const [note, setNote] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,25 +47,24 @@ function AddCameraWithRoomModal({
       return;
     }
 
-    const selectedRoom = examRooms.find(room => room.id === selectedRoomId);
+    const selectedRoom = rooms.find(room => room.id === selectedRoomId);
     
     if (!selectedRoom) {
       alert('Selected room not found');
       return;
     }
 
-    // Generate unique camera ID
-    const maxCamNumber = selectedRoom.cameras.reduce((max, camera) => {
-      const camNumber = parseInt(camera.name.split(' ')[1] || '0');
-      return camNumber > max ? camNumber : max;
-    }, 0);
-
-    const newCamNumber = maxCamNumber + 1;
-    const cameraId = `cam${newCamNumber}`;
+    // Generate unique camera ID across all cameras
+    const allCameras = rooms.flatMap(room => room.cameras);
+    const maxCameraId = allCameras.reduce((max, camera) => 
+      camera.id > max ? camera.id : max, 0
+    );
 
     const newCamera: Camera = {
-      id: cameraId,
-      name: cameraName
+      id: maxCameraId + 1,
+      name: cameraName,
+      status: 'Offline',
+      note: note || undefined
     };
 
     onAddCamera(selectedRoomId, newCamera);
@@ -72,12 +72,14 @@ function AddCameraWithRoomModal({
     // Reset form
     setCameraName('');
     setSelectedRoomId('');
+    setNote('');
     onClose();
   };
 
   const handleClose = () => {
     setCameraName('');
     setSelectedRoomId('');
+    setNote('');
     onClose();
   };
 
@@ -108,9 +110,9 @@ function AddCameraWithRoomModal({
               <Select
                 value={selectedRoomId}
                 label="Select Room"
-                onChange={(e) => setSelectedRoomId(e.target.value as string)}
+                onChange={(e) => setSelectedRoomId(e.target.value as number)}
               >
-                {examRooms.map(room => (
+                {rooms.map(room => (
                   <MenuItem key={room.id} value={room.id}>{room.name}</MenuItem>
                 ))}
               </Select>
@@ -124,6 +126,17 @@ function AddCameraWithRoomModal({
               placeholder="e.g., CAM 1"
               required
               variant="outlined"
+            />
+
+            <TextField
+              fullWidth
+              label="Note"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Optional notes about this camera"
+              variant="outlined"
+              multiline
+              rows={3}
             />
           </Box>
         </DialogContent>
